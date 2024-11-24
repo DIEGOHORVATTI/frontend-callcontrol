@@ -12,7 +12,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material'
-import { Call } from './hooks/use-socket'
+import { Call } from '../../hooks/use-socket'
 import { enqueueSnackbar } from 'notistack'
 
 type Props = {

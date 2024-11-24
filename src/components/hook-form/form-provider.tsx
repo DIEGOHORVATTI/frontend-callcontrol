@@ -6,7 +6,7 @@ type Props = {
   onSubmit?: VoidFunction
 }
 
-export default function FormProvider({ children, onSubmit, methods }: Props) {
+export const FormProvider = ({ children, onSubmit, methods }: Props) => {
   return (
     <Form {...methods}>
       <form onSubmit={onSubmit}>{children}</form>

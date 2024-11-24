@@ -1,7 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { Box, Button, Card, Stack, Typography } from '@mui/material'
-import RHFTextField from '@/components/hook-form/rhf-text-field'
-import FormProvider from '@/components/hook-form/form-provider'
+import { FormProvider, RHFTextField } from '@/components/hook-form'
 
 type FormValues = {
   username: string
@@ -43,6 +42,7 @@ export const LoginForm = ({ onConnect }: Props) => {
         <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
           <Stack spacing={3}>
             <RHFTextField name="username" label="Username" />
+
             <RHFTextField
               name="maxCalls"
               label="Max Simultaneous Calls"

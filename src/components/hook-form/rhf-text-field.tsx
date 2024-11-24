@@ -6,7 +6,7 @@ type Props = TextFieldProps & {
   name: string
 }
 
-export default function RHFTextField({ name, helperText, type, ...other }: Props) {
+export const RHFTextField = ({ name, helperText, type, ...other }: Props) => {
   const { control } = useFormContext()
 
   return (
