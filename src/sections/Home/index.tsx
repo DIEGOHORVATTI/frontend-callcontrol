@@ -7,7 +7,7 @@ export const Home = () => {
 
   return (
     <div>
-      <h1>Home</h1>
+      <h1>{`${settings.themeMode} mode!`}</h1>
 
       <Button onClick={settings.onToggleMode}>mode</Button>
     </div>

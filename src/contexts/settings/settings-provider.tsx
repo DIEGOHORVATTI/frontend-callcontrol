@@ -4,7 +4,7 @@ import { useLocalStorage } from '@/hooks/use-local-storage'
 
 import { SettingsContext } from './settings-context'
 
-import { SettingsValueProps } from './types'
+import { SettingsContextProps, SettingsValueProps } from './types'
 import { STORAGE_KEYS } from '../../constants/config'
 
 type Props = {
@@ -13,19 +13,21 @@ type Props = {
 }
 
 export const SettingsProvider = ({ children, defaultSettings }: Props) => {
-  const { state, update: onUpdate } = useLocalStorage(STORAGE_KEYS.SETTINGS, defaultSettings)
+  const { state, update } = useLocalStorage<SettingsValueProps>(
+    STORAGE_KEYS.SETTINGS,
+    defaultSettings
+  )
 
-  const onToggleMode = () => {
-    onUpdate('mode', state.mode === 'light' ? 'dark' : 'light')
-  }
+  const onToggleMode = () =>
+    update({ ...state, themeMode: state.themeMode === 'light' ? 'dark' : 'light' })
 
-  const memoizedValue = useMemo(
+  const memoizedValue = useMemo<SettingsContextProps>(
     () => ({
       ...state,
       onToggleMode,
-      onUpdate,
+      onUpdate: update,
     }),
-    [onUpdate, state]
+    [update, state]
   )
 
   return <SettingsContext.Provider value={memoizedValue}>{children}</SettingsContext.Provider>
