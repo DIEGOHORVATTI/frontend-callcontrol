@@ -42,7 +42,6 @@ import { cssBaseline } from './components/css-baseline'
 import { buttonGroup } from './components/button-group'
 import { autocomplete } from './components/autocomplete'
 import { toggleButton } from './components/toggle-button'
-import { loadingButton } from './components/loading-button'
 
 export function componentsOverrides(theme: Theme) {
   const components = merge(
@@ -87,8 +86,7 @@ export function componentsOverrides(theme: Theme) {
     breadcrumbs(theme),
     cssBaseline(),
     autocomplete(theme),
-    toggleButton(theme),
-    loadingButton()
+    toggleButton(theme)
   )
 
   return components
