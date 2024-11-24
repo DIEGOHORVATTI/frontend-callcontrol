@@ -4,8 +4,9 @@ import { useLocalStorage } from '@/hooks/use-local-storage'
 
 import { SettingsContext } from './settings-context'
 
+import { STORAGE_KEYS } from '@/constants/config'
+
 import { SettingsContextProps, SettingsValueProps } from './types'
-import { STORAGE_KEYS } from '../../constants/config'
 
 type Props = {
   children: React.ReactNode
