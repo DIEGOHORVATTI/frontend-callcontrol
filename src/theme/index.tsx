@@ -18,7 +18,6 @@ import NextAppDirEmotionCacheProvider from './next-emotion-cache'
 
 import { LocalizationProvider as MuiLocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
-
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
@@ -36,34 +35,16 @@ type Props = {
   settings: SettingsValueProps
 }
 
-export default function ThemeProvider({ children, settings }: Props) {
-  const darkModeOption = darkMode(settings.themeMode)
-
-  const presetsOption = presets(settings.themeColorPresets)
-
+export const ThemeProvider = ({ children, settings }: Props) => {
+  const themeOptions = useMemo(() => getThemeOptions(settings), [settings]) as ThemeOptions
   const contrastOption = contrast(settings.themeContrast === 'bold', settings.themeMode)
 
-  const directionOption = direction(settings.themeDirection)
+  const theme = useMemo(() => {
+    const newTheme = createTheme(themeOptions)
+    theme.components = merge(componentsOverrides(theme), contrastOption.components)
 
-  const baseOption = useMemo(
-    () => ({
-      palette: palette('light'),
-      shadows: shadows('light'),
-      customShadows: customShadows('light'),
-      typography,
-      shape: { borderRadius: 8 },
-    }),
-    []
-  )
-
-  const memoizedValue = useMemo(
-    () => merge(baseOption, directionOption, darkModeOption, presetsOption, contrastOption.theme),
-    [baseOption, directionOption, darkModeOption, presetsOption, contrastOption.theme]
-  )
-
-  const theme = createTheme(memoizedValue as ThemeOptions)
-
-  theme.components = merge(componentsOverrides(theme), contrastOption.components)
+    return newTheme
+  }, [themeOptions, contrastOption])
 
   return (
     <NextAppDirEmotionCacheProvider options={{ key: 'css' }}>
@@ -72,12 +53,34 @@ export default function ThemeProvider({ children, settings }: Props) {
           <MuiThemeProvider theme={theme}>
             <RTL themeDirection={settings.themeDirection}>
               <CssBaseline />
-
               {children}
             </RTL>
           </MuiThemeProvider>
         </MuiLocalizationProvider>
       </LocalizationProvider>
     </NextAppDirEmotionCacheProvider>
+  )
+}
+
+const getBaseThemeOptions = () => ({
+  palette: palette('light'),
+  shadows: shadows('light'),
+  customShadows: customShadows('light'),
+  typography,
+  shape: { borderRadius: 8 },
+})
+
+const getThemeOptions = (settings: SettingsValueProps) => {
+  const darkModeOption = darkMode(settings.themeMode)
+  const presetsOption = presets(settings.themeColorPresets)
+  const contrastOption = contrast(settings.themeContrast === 'bold', settings.themeMode)
+  const directionOption = direction(settings.themeDirection)
+
+  return merge(
+    getBaseThemeOptions(),
+    directionOption,
+    darkModeOption,
+    presetsOption,
+    contrastOption.theme
   )
 }
