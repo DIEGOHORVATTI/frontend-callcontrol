@@ -13,14 +13,19 @@ type Props = {
 }
 
 export const SettingsProvider = ({ children, defaultSettings }: Props) => {
-  const { state, update } = useLocalStorage(STORAGE_KEYS.SETTINGS, defaultSettings)
+  const { state, update: onUpdate } = useLocalStorage(STORAGE_KEYS.SETTINGS, defaultSettings)
+
+  const onToggleMode = () => {
+    onUpdate('mode', state.mode === 'light' ? 'dark' : 'light')
+  }
 
   const memoizedValue = useMemo(
     () => ({
       ...state,
-      onUpdate: update,
+      onToggleMode,
+      onUpdate,
     }),
-    [update, state]
+    [onUpdate, state]
   )
 
   return <SettingsContext.Provider value={memoizedValue}>{children}</SettingsContext.Provider>

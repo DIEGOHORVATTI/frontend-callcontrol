@@ -1,4 +1,4 @@
-import { HOST_API, userCurrencyStorage } from '@/constants/config'
+import { HOST_API } from '@/constants/config'
 
 import axiosInstance, { AxiosResponse, AxiosRequestConfig } from 'axios'
 
@@ -36,7 +36,7 @@ export const serverColorsError = (status: number) => {
 }
 
 export const axios = axiosInstance.create({
-  timeout: 60 * 1000, // 1 minute
+  timeout: 60 * 1_000, // 1 minute
   timeoutErrorMessage:
     'Tempo limite excedido. Verifique sua conexão com a internet e tente novamente.',
   baseURL: HOST_API,
@@ -58,7 +58,6 @@ axios.interceptors.response.use(
       return error
     }) || [textDefault]
 
-    // Convert the message array to a single string
     const errorMessage = message.join(', ')
     return Promise.reject(new Error(errorMessage))
   }
@@ -67,9 +66,7 @@ axios.interceptors.response.use(
 export const fetcher = async (args: string | [string, AxiosRequestConfig]) => {
   const [url, config] = Array.isArray(args) ? args : [args]
 
-  const params = { ...(config?.params || {}), ...{ user: userCurrencyStorage } }
-
-  const res = await axiosInstance.get(url, { ...config, params })
+  const res = await axiosInstance.get(url, config)
 
   return res.data
 }

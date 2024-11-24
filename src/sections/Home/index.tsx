@@ -9,7 +9,7 @@ export const Home = () => {
     <div>
       <h1>Home</h1>
 
-      <Button onClick={settings.onToggle}>mode</Button>
+      <Button onClick={settings.onToggleMode}>mode</Button>
     </div>
   )
 }
