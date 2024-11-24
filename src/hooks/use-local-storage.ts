@@ -17,10 +17,7 @@ export function useLocalStorage(key: string, initialState: any) {
   const updateState = useCallback(
     (updateValue: any) => {
       setState((prevValue: any) => {
-        setStorage(key, {
-          ...prevValue,
-          ...updateValue,
-        })
+        setStorage(key, { ...prevValue, ...updateValue })
 
         return {
           ...prevValue,

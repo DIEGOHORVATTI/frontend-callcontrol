@@ -1,15 +1,15 @@
-import { Button, useTheme } from '@mui/material'
-import { darkMode } from '../../theme/options/dark-mode'
+import { Button } from '@mui/material'
+
+import { useSettingsContext } from '@/components/settings'
 
 export const Home = () => {
-  const theme = useTheme()
+  const settings = useSettingsContext()
 
   return (
     <div>
       <h1>Home</h1>
 
-      {/* toogle theme */}
-      <Button onClick={() => darkMode('light')}>Toggle Theme</Button>
+      <Button onClick={settings.onToggle}>mode</Button>
     </div>
   )
 }

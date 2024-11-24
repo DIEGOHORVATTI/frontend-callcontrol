@@ -13,74 +13,55 @@ import { componentsOverrides } from './overrides'
 import { presets } from './options/presets'
 import { darkMode } from './options/dark-mode'
 import { contrast } from './options/contrast'
-import RTL, { direction } from './options/right-to-left'
+
 import NextAppDirEmotionCacheProvider from './next-emotion-cache'
 
 import { LocalizationProvider as MuiLocalizationProvider } from '@mui/x-date-pickers'
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { useSettingsContext } from '../components/settings'
 
-type SettingsValueProps = {
-  themeStretch: boolean
-  themeMode: 'light' | 'dark'
-  themeDirection: 'rtl' | 'ltr'
-  themeContrast: 'default' | 'bold'
-  themeLayout: 'vertical' | 'horizontal' | 'mini'
-  themeColorPresets: 'default' | 'cyan' | 'purple' | 'blue' | 'orange' | 'red'
-}
+export const ThemeProvider = ({ children }: React.PropsWithChildren) => {
+  const settings = useSettingsContext()
 
-type Props = {
-  children: React.ReactNode
-  settings: SettingsValueProps
-}
+  const darkModeOption = darkMode(settings.themeMode)
 
-export const ThemeProvider = ({ children, settings }: Props) => {
-  const themeOptions = useMemo(() => getThemeOptions(settings), [settings]) as ThemeOptions
+  const presetsOption = presets(settings.themeColorPresets)
+
   const contrastOption = contrast(settings.themeContrast === 'bold', settings.themeMode)
 
-  const theme = useMemo(() => {
-    const newTheme = createTheme(themeOptions)
-    theme.components = merge(componentsOverrides(theme), contrastOption.components)
+  const baseOption = useMemo(
+    () => ({
+      palette: palette('light'),
+      shadows: shadows('light'),
+      customShadows: customShadows('light'),
+      typography,
+      shape: { borderRadius: 8 },
+    }),
+    []
+  )
 
-    return newTheme
-  }, [themeOptions, contrastOption])
+  const memoizedValue = useMemo(
+    () => merge(baseOption, darkModeOption, presetsOption, contrastOption.theme),
+    [baseOption, darkModeOption, presetsOption, contrastOption.theme]
+  )
+
+  const theme = createTheme(memoizedValue as ThemeOptions)
+
+  theme.components = merge(componentsOverrides(theme), contrastOption.components)
 
   return (
     <NextAppDirEmotionCacheProvider options={{ key: 'css' }}>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <MuiLocalizationProvider dateAdapter={AdapterDateFns}>
-          <MuiThemeProvider theme={theme}>
-            <RTL themeDirection={settings.themeDirection}>
-              <CssBaseline />
-              {children}
-            </RTL>
-          </MuiThemeProvider>
-        </MuiLocalizationProvider>
+      <LocalizationProvider>
+        <MuiThemeProvider theme={theme}>
+          <CssBaseline />
+
+          {children}
+        </MuiThemeProvider>
       </LocalizationProvider>
     </NextAppDirEmotionCacheProvider>
   )
 }
 
-const getBaseThemeOptions = () => ({
-  palette: palette('light'),
-  shadows: shadows('light'),
-  customShadows: customShadows('light'),
-  typography,
-  shape: { borderRadius: 8 },
-})
-
-const getThemeOptions = (settings: SettingsValueProps) => {
-  const darkModeOption = darkMode(settings.themeMode)
-  const presetsOption = presets(settings.themeColorPresets)
-  const contrastOption = contrast(settings.themeContrast === 'bold', settings.themeMode)
-  const directionOption = direction(settings.themeDirection)
-
-  return merge(
-    getBaseThemeOptions(),
-    directionOption,
-    darkModeOption,
-    presetsOption,
-    contrastOption.theme
-  )
-}
+const LocalizationProvider = ({ children }: React.PropsWithChildren) => (
+  <MuiLocalizationProvider dateAdapter={AdapterDayjs}>{children}</MuiLocalizationProvider>
+)

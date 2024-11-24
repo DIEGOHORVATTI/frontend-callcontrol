@@ -9,28 +9,30 @@ import { MotionLazy } from './components/animate/motion-lazy'
 import SnackbarProvider from './contexts/snackbar/snackbar-provider'
 
 import { Home } from '@/sections/Home'
+import { SettingsProvider } from './components/settings'
 
 export const App = () => (
-  <ThemeProvider
-    settings={{
+  <SettingsProvider
+    defaultSettings={{
       themeMode: 'dark',
-      themeDirection: 'ltr',
       themeContrast: 'default',
       themeLayout: 'vertical',
       themeColorPresets: 'default',
       themeStretch: false,
     }}
   >
-    <MotionLazy>
-      <SnackbarProvider>
-        <ProgressBar />
+    <ThemeProvider>
+      <MotionLazy>
+        <SnackbarProvider>
+          <ProgressBar />
 
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Home />} />
-          </Routes>
-        </BrowserRouter>
-      </SnackbarProvider>
-    </MotionLazy>
-  </ThemeProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Home />} />
+            </Routes>
+          </BrowserRouter>
+        </SnackbarProvider>
+      </MotionLazy>
+    </ThemeProvider>
+  </SettingsProvider>
 )
