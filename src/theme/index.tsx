@@ -3,6 +3,8 @@ import merge from 'lodash/merge'
 
 import CssBaseline from '@mui/material/CssBaseline'
 import { createTheme, ThemeProvider as MuiThemeProvider, ThemeOptions } from '@mui/material/styles'
+import { LocalizationProvider as MuiLocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 import { palette } from './palette'
 import { shadows } from './shadows'
@@ -16,9 +18,7 @@ import { contrast } from './options/contrast'
 
 import NextAppDirEmotionCacheProvider from './next-emotion-cache'
 
-import { LocalizationProvider as MuiLocalizationProvider } from '@mui/x-date-pickers'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { useSettingsContext } from '../components/settings'
+import { useSettingsContext } from '../contexts/settings'
 
 export const ThemeProvider = ({ children }: React.PropsWithChildren) => {
   const settings = useSettingsContext()

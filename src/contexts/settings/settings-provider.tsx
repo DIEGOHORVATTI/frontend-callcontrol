@@ -1,11 +1,11 @@
 import { useMemo } from 'react'
 
-import { useLocalStorage } from 'src/hooks/use-local-storage'
+import { useLocalStorage } from '@/hooks/use-local-storage'
 
-import { SettingsValueProps } from '../types'
 import { SettingsContext } from './settings-context'
 
-const STORAGE_KEY = 'settings'
+import { SettingsValueProps } from './types'
+import { STORAGE_KEYS } from '../../constants/config'
 
 type Props = {
   children: React.ReactNode
@@ -13,7 +13,7 @@ type Props = {
 }
 
 export const SettingsProvider = ({ children, defaultSettings }: Props) => {
-  const { state, update } = useLocalStorage(STORAGE_KEY, defaultSettings)
+  const { state, update } = useLocalStorage(STORAGE_KEYS.SETTINGS, defaultSettings)
 
   const memoizedValue = useMemo(
     () => ({

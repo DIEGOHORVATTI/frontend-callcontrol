@@ -9,7 +9,8 @@ import { MotionLazy } from './components/animate/motion-lazy'
 import SnackbarProvider from './contexts/snackbar/snackbar-provider'
 
 import { Home } from '@/sections/Home'
-import { SettingsProvider } from './components/settings'
+
+import { SettingsProvider } from './contexts/settings'
 
 export const App = () => (
   <SettingsProvider

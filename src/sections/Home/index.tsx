@@ -1,6 +1,6 @@
 import { Button } from '@mui/material'
 
-import { useSettingsContext } from '@/components/settings'
+import { useSettingsContext } from '../../contexts/settings'
 
 export const Home = () => {
   const settings = useSettingsContext()
