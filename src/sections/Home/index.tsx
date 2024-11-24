@@ -1,6 +1,6 @@
 import { Button } from '@mui/material'
 
-import { useSettingsContext } from '../../contexts/settings'
+import { useSettingsContext } from '@/contexts/settings'
 
 export const Home = () => {
   const settings = useSettingsContext()
@@ -9,7 +9,9 @@ export const Home = () => {
     <div>
       <h1>{`${settings.themeMode} mode!`}</h1>
 
-      <Button onClick={settings.onToggleMode}>mode</Button>
+      <Button variant="soft" onClick={settings.onToggleMode}>
+        mode
+      </Button>
     </div>
   )
 }
