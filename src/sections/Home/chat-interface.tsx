@@ -17,6 +17,7 @@ import { Call } from '@/hooks/use-socket'
 import dayjs from 'dayjs'
 import { Socket } from 'socket.io-client'
 import { enqueueSnackbar } from 'notistack'
+import { CallDetails } from './call-details'
 
 type Props = {
   socket: Socket | null
@@ -59,6 +60,14 @@ export const ChatInterface = ({ socket, onDisconnect }: Props) => {
     }
   }
 
+  const noCallSelected = (
+    <Box sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Typography variant="subtitle1" sx={{ color: 'text.secondary' }}>
+        Selecione uma chamada para ver detalhes
+      </Typography>
+    </Box>
+  )
+
   return (
     <Card sx={{ height: '90vh', display: 'flex' }}>
       <Stack sx={{ width: 300, borderRight: '1px solid', borderColor: 'divider' }}>
@@ -89,56 +98,9 @@ export const ChatInterface = ({ socket, onDisconnect }: Props) => {
       </Stack>
 
       <Box sx={{ flexGrow: 1, p: 3 }}>
-        {selectedCall && (
-          <Stack spacing={3}>
-            <Stack
-              direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-              sx={{ mb: 3 }}
-            >
-              <Typography variant="h6">{selectedCall.caller}</Typography>
-              <Button
-                variant="contained"
-                color="error"
-                onClick={() => handleEndCall(selectedCall.callId)}
-              >
-                Finalizar
-              </Button>
-            </Stack>
+        {selectedCall && <CallDetails call={selectedCall} onEndCall={handleEndCall} />}
 
-            <Divider />
-
-            <Stack spacing={2}>
-              <Typography variant="body2">
-                <strong>Call ID:</strong> {selectedCall.callId}
-              </Typography>
-
-              <Typography variant="body2">
-                <strong>Service:</strong> {selectedCall.service}
-              </Typography>
-
-              <Typography variant="body2">
-                <strong>Duration:</strong> {dayjs(selectedCall.startDate).format('HH:mm A')}
-              </Typography>
-            </Stack>
-          </Stack>
-        )}
-
-        {!selectedCall && (
-          <Box
-            sx={{
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Typography variant="subtitle1" sx={{ color: 'text.secondary' }}>
-              Selecione uma chamada para ver detalhes
-            </Typography>
-          </Box>
-        )}
+        {!selectedCall && noCallSelected}
       </Box>
     </Card>
   )
