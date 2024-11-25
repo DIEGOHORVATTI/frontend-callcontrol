@@ -31,7 +31,7 @@ export const ThemeProvider = ({ children }: React.PropsWithChildren) => {
 
   const baseOption = useMemo(
     () => ({
-      palette: palette('light'),
+      palette,
       shadows: shadows('light'),
       customShadows: customShadows('light'),
       typography,

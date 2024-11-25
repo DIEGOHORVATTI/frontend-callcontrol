@@ -7,7 +7,7 @@ export function contrast(contrastBold: boolean, mode: 'light' | 'dark') {
       mode === 'light' && {
         palette: {
           background: {
-            default: palette(mode).grey[100],
+            default: palette[mode].grey[100],
           },
         },
       }),

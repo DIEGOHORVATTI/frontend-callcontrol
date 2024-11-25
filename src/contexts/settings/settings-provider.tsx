@@ -22,10 +22,14 @@ export const SettingsProvider = ({ children, defaultSettings }: Props) => {
   const onToggleMode = () =>
     update({ ...state, themeMode: state.themeMode === 'light' ? 'dark' : 'light' })
 
+  const onPresetsChange = (themeColorPresets: SettingsValueProps['themeColorPresets']) =>
+    update({ ...state, themeColorPresets })
+
   const memoizedValue = useMemo<SettingsContextProps>(
     () => ({
       ...state,
       onToggleMode,
+      onPresetsChange,
       onUpdate: update,
     }),
     [update, state]

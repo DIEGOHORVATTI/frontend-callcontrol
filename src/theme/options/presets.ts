@@ -1,30 +1,28 @@
 import { alpha } from '@mui/material/styles'
 
-import { palette as themePalette } from '@/theme/palette'
+import { palette } from '@/theme/palette'
+import { SettingsValueProps } from '../../contexts/settings/types'
 
 export function presets(presetsColor: string) {
   const primary = primaryPresets.find((i) => i.name === presetsColor)
 
   const theme = {
-    palette: {
-      primary,
-    },
-    customShadows: {
-      primary: `0 8px 16px 0 ${alpha(`${primary?.main}`, 0.24)}`,
-    },
+    palette: { primary },
+    customShadows: { primary: `0 8px 16px 0 ${alpha(`${primary?.main}`, 0.24)}` },
   }
 
   return theme
 }
 
-const palette = themePalette('light')
-
-export const primaryPresets = [
-  // DEFAULT
-  {
-    name: 'default',
-    ...palette.primary,
-  },
+export const primaryPresets: Array<{
+  name: SettingsValueProps['themeColorPresets']
+  lighter?: string
+  light?: string
+  main: string
+  dark?: string
+  darker?: string
+  contrastText?: string
+}> = [
   // CYAN
   {
     name: 'cyan',
@@ -63,7 +61,7 @@ export const primaryPresets = [
     main: '#fda92d',
     dark: '#B66816',
     darker: '#793908',
-    contrastText: palette.grey[800],
+    contrastText: palette.light.grey[800],
   },
   // RED
   {

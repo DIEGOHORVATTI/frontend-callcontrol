@@ -15,7 +15,7 @@ export const App = () => (
       themeMode: 'dark',
       themeContrast: 'default',
       themeLayout: 'vertical',
-      themeColorPresets: 'default',
+      themeColorPresets: 'purple',
       themeStretch: false,
     }}
   >

@@ -1,7 +1,9 @@
 import { useForm } from 'react-hook-form'
 import { Box, Button, Card, Stack, Typography } from '@mui/material'
 import { FormProvider, RHFTextField } from '@/components/hook-form'
-import { RHFNumberField } from '../../components/hook-form/rhf-number-field'
+
+import { RHFNumberField } from '@/components/hook-form/rhf-number-field'
+import { SettingMode } from '@/components/SettingMode'
 
 type FormValues = {
   username: string
@@ -30,13 +32,22 @@ export const LoginForm = ({ onConnect }: Props) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        minHeight: '100vh',
+        height: '90vh',
+        overflow: 'hidden',
       }}
     >
-      <Card sx={{ p: 4, maxWidth: 400, width: '100%' }}>
-        <Typography variant="h4" sx={{ mb: 4, textAlign: 'center' }}>
+      <Card component={Stack} spacing={2} sx={{ p: 4, maxWidth: 400, width: '100%' }}>
+        <Typography variant="h4" sx={{ textAlign: 'center' }}>
           Login
         </Typography>
+
+        <Card
+          component={Stack}
+          spacing={2}
+          sx={{ p: 1, width: '100%', bgcolor: 'background.neutral' }}
+        >
+          <SettingMode />
+        </Card>
 
         <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
           <Stack spacing={3}>
