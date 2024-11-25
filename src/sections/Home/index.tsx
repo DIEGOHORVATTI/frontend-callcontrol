@@ -19,7 +19,13 @@ export const Home = () => {
   }
 
   return (
-    <Container maxWidth="lg">
+    <Container
+      maxWidth="lg"
+      sx={{
+        background: (theme) =>
+          `linear-gradient(135deg, ${theme.palette.primary.light} 0%, ${theme.palette.secondary.main} 100%)`,
+      }}
+    >
       <Box sx={{ minHeight: '100vh', py: 4 }}>
         {!isConnected ? (
           <LoginForm onConnect={handleConnect} />
