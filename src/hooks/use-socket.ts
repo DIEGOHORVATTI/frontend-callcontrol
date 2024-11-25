@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { io, Socket } from 'socket.io-client'
 import { enqueueSnackbar } from 'notistack'
+import { endpoints, HOST_API } from '../constants/config'
 
 export type Call = {
   callId: string
@@ -15,9 +16,9 @@ export const useSocket = () => {
 
   const connect = useCallback((username: string, maxCalls: number) => {
     if (!socketRef.current) {
-      socketRef.current = io('http://dev.digitro.com', {
+      socketRef.current = io(HOST_API, {
         reconnectionDelayMax: 10000,
-        path: '/callcontrol',
+        path: endpoints.callcontrol,
       })
 
       socketRef.current.on('USER_CONNECTED', (data) => {

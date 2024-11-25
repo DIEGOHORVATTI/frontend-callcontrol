@@ -1,6 +1,8 @@
-export const HOST_API = 'https://api.example.com'
+export const HOST_API = 'http://dev.digitro.com'
 
-export const endpoints = {}
+export const endpoints = {
+  callcontrol: '/callcontrol',
+}
 
 export const STORAGE_KEYS = {
   SETTINGS: 'settings',
