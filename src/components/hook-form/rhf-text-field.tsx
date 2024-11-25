@@ -1,36 +1,44 @@
 import { useFormContext, Controller } from 'react-hook-form'
 
-import TextField, { TextFieldProps } from '@mui/material/TextField'
+import { TextField, TextFieldProps } from '@mui/material'
 
-type Props = TextFieldProps & {
-  name: string
-}
+type Props = TextFieldProps &
+  Pick<React.ComponentProps<typeof Controller>, 'rules'> & {
+    name: string
+    label?: string
+  }
 
-export const RHFTextField = ({ name, helperText, type, ...other }: Props) => {
-  const { control } = useFormContext()
+export const RHFTextField = ({ name, required, ...other }: Props) => {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext()
 
   return (
     <Controller
       name={name}
       control={control}
-      render={({ field, fieldState: { error } }) => (
-        <TextField
-          {...field}
-          fullWidth
-          type={type}
-          value={type === 'number' && field.value === 0 ? '' : field.value}
-          onChange={(event) => {
-            if (type === 'number') {
-              field.onChange(Number(event.target.value))
-            } else {
-              field.onChange(event.target.value)
-            }
-          }}
-          error={!!error}
-          helperText={error ? error?.message : helperText}
-          {...other}
-        />
-      )}
+      rules={{ required: required && 'Campo obrigatório', ...other.rules }}
+      render={({ field, fieldState: { error: { message } = { message: '' } } }) => {
+        const error = errors[name]
+        const isError = Boolean(error)
+
+        const helperText = error?.message?.toString() || message
+
+        return (
+          <TextField
+            {...field}
+            fullWidth
+            {...other}
+            error={isError}
+            helperText={helperText}
+            onChange={(event) => {
+              const value = event.target.value || ''
+              field.onChange(value)
+            }}
+          />
+        )
+      }}
     />
   )
 }

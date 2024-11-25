@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { Box, Button, Card, Stack, Typography } from '@mui/material'
 import { FormProvider, RHFTextField } from '@/components/hook-form'
+import { RHFNumberField } from '../../components/hook-form/rhf-number-field'
 
 type FormValues = {
   username: string
@@ -21,9 +22,7 @@ export const LoginForm = ({ onConnect }: Props) => {
 
   const { handleSubmit } = methods
 
-  const onSubmit = (data: FormValues) => {
-    onConnect(data.username, data.maxCalls)
-  }
+  const onSubmit = ({ username, maxCalls }: FormValues) => onConnect(username, maxCalls)
 
   return (
     <Box
@@ -36,22 +35,24 @@ export const LoginForm = ({ onConnect }: Props) => {
     >
       <Card sx={{ p: 4, maxWidth: 400, width: '100%' }}>
         <Typography variant="h4" sx={{ mb: 4, textAlign: 'center' }}>
-          Call Control Login
+          Login
         </Typography>
 
         <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
           <Stack spacing={3}>
-            <RHFTextField name="username" label="Username" />
+            <RHFTextField required name="username" label="Usuário" />
 
-            <RHFTextField
+            <RHFNumberField
+              required
               name="maxCalls"
-              label="Max Simultaneous Calls"
-              type="number"
-              InputProps={{ inputProps: { min: 1, max: 10 } }}
+              label="Máximo de chamadas"
+              rules={{
+                min: { value: 1, message: 'Mínimo de 1 chamada' },
+              }}
             />
 
             <Button size="large" type="submit" variant="contained">
-              Connect
+              Conectar
             </Button>
           </Stack>
         </FormProvider>
