@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useRef } from 'react'
+
 import { io, Socket } from 'socket.io-client'
 import { enqueueSnackbar } from 'notistack'
-import { endpoints, HOST_API } from '../constants/config'
+
+import { endpoints, HOST_API } from '@/constants/config'
 
 export type Call = {
   callId: string
