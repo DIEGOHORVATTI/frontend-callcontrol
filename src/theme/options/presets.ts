@@ -1,7 +1,6 @@
 import { alpha } from '@mui/material/styles'
 
-import { palette } from '@/theme/palette'
-import { SettingsValueProps } from '../../contexts/settings/types'
+import { COMMON } from '@/theme/palette'
 
 export function presets(presetsColor: string) {
   const primary = primaryPresets.find((i) => i.name === presetsColor)
@@ -15,7 +14,7 @@ export function presets(presetsColor: string) {
 }
 
 export const primaryPresets: Array<{
-  name: SettingsValueProps['themeColorPresets']
+  name: keyof typeof COMMON
   lighter?: string
   light?: string
   main: string
@@ -23,54 +22,32 @@ export const primaryPresets: Array<{
   darker?: string
   contrastText?: string
 }> = [
-  // CYAN
   {
     name: 'cyan',
-    lighter: '#CCF4FE',
-    light: '#68CDF9',
-    main: '#078DEE',
-    dark: '#0351AB',
-    darker: '#012972',
-    contrastText: '#FFFFFF',
+    ...COMMON['cyan'],
   },
-  // PURPLE
+  {
+    name: 'pink',
+    ...COMMON['pink'],
+  },
+  {
+    name: 'success',
+    ...COMMON['success'],
+  },
+  {
+    name: 'greenLemon',
+    ...COMMON['greenLemon'],
+  },
   {
     name: 'purple',
-    lighter: '#EBD6FD',
-    light: '#B985F4',
-    main: '#7635dc',
-    dark: '#431A9E',
-    darker: '#200A69',
-    contrastText: '#FFFFFF',
+    ...COMMON['purple'],
   },
-  // BLUE
   {
-    name: 'blue',
-    lighter: '#D1E9FC',
-    light: '#76B0F1',
-    main: '#2065D1',
-    dark: '#103996',
-    darker: '#061B64',
-    contrastText: '#FFFFFF',
+    name: 'error',
+    ...COMMON['error'],
   },
-  // ORANGE
   {
-    name: 'orange',
-    lighter: '#FEF4D4',
-    light: '#FED680',
-    main: '#fda92d',
-    dark: '#B66816',
-    darker: '#793908',
-    contrastText: palette.light.grey[800],
-  },
-  // RED
-  {
-    name: 'red',
-    lighter: '#FFE3D5',
-    light: '#FFC1AC',
-    main: '#FF3030',
-    dark: '#B71833',
-    darker: '#7A0930',
-    contrastText: '#FFFFFF',
+    name: 'warning',
+    ...COMMON['warning'],
   },
 ]

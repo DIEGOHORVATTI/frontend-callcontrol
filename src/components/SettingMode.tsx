@@ -1,14 +1,13 @@
-import { Box, IconButton, Stack, ButtonBase } from '@mui/material'
+import { IconButton, Stack, ButtonBase } from '@mui/material'
 import { alpha } from '@mui/material/styles'
 
 import { Iconify } from '@/components'
 import { useSettingsContext } from '@/contexts/settings'
 
 import { primaryPresets } from '@/theme/options/presets'
-import { SettingsContextProps } from '../contexts/settings/types'
 
 export const SettingMode = () => {
-  const { onToggleMode, themeMode, onPresetsChange } = useSettingsContext()
+  const { onToggleMode, themeMode } = useSettingsContext()
 
   return (
     <Stack direction="row" spacing={1} alignItems="center" justifyContent="space-between">
@@ -21,57 +20,41 @@ export const SettingMode = () => {
         <Iconify icon={themeMode === 'light' ? 'ph:moon-duotone' : 'ph:sun-duotone'} />
       </IconButton>
 
-      <PresetsOptions value={themeMode} onPresetsChange={onPresetsChange} />
+      <PresetsOptions />
     </Stack>
   )
 }
 
-type PresetsOptionsProps = Pick<SettingsContextProps, 'onPresetsChange'> & {
-  value: string
-}
+const PresetsOptions = () => {
+  const { themeColorPresets, onPresetsChange } = useSettingsContext()
 
-const PresetsOptions = ({ value, onPresetsChange }: PresetsOptionsProps) => {
-  const options = primaryPresets.map((color) => ({
-    name: color.name,
-    value: color.main,
-  }))
+  const options = primaryPresets.map(({ name, main }) => ({ name, main }))
 
   return (
-    <Stack direction="row" spacing={1}>
-      {options.map((option) => {
-        const selected = value === option.name
+    <Stack direction="row" spacing={1} sx={{ overflow: 'auto' }}>
+      {options.map(({ name, main }) => {
+        const selected = themeColorPresets === name
 
         return (
           <ButtonBase
-            key={option.name}
-            onClick={() => onPresetsChange(option.name)}
+            key={name}
+            onClick={() => onPresetsChange(name)}
             sx={{
               height: 30,
               width: 30,
               borderRadius: 1,
+              bgcolor: alpha(main, 0.9),
               border: (theme) => `solid 1px ${alpha(theme.palette.grey[500], 0.08)}`,
+              padding: 1,
+              transition: (theme) =>
+                theme.transitions.create(['transform'], {
+                  duration: theme.transitions.duration.shorter,
+                }),
               ...(selected && {
-                borderColor: 'transparent',
-                bgcolor: alpha(option.value, 0.08),
+                border: (theme) => `solid 1px ${theme.palette.primary.light}`,
               }),
             }}
-          >
-            <Box
-              sx={{
-                width: 20,
-                height: 20,
-                borderRadius: '50%',
-                bgcolor: option.value,
-                transition: (theme) =>
-                  theme.transitions.create(['transform'], {
-                    duration: theme.transitions.duration.shorter,
-                  }),
-                ...(selected && {
-                  transform: 'scale(2)',
-                }),
-              }}
-            />
-          </ButtonBase>
+          />
         )
       })}
     </Stack>

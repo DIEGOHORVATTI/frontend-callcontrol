@@ -1,11 +1,11 @@
-import { CHART_COLORS } from '@/theme/palette'
+import { COMMON } from '@/theme/palette'
 
 export type SettingsValueProps = {
   themeStretch: boolean
   themeMode: 'light' | 'dark'
   themeContrast: 'default' | 'bold'
   themeLayout: 'vertical' | 'horizontal' | 'mini'
-  themeColorPresets: keyof typeof CHART_COLORS
+  themeColorPresets: keyof typeof COMMON
 }
 
 export type SettingsContextProps = SettingsValueProps & {

@@ -148,7 +148,7 @@ const SALMON = {
   darker: '#8C1700',
 }
 
-export const CHART_COLORS = {
+const CHART_COLORS = {
   violet: ['#826AF9', '#9E86FF', '#D0AEFF', '#F7D2FF'],
   cyan: ['#2CA8FF', '#6CDFFF', '#A4E3FF', '#CFF4FF'],
   blue: ['#2D99FF', '#83CFFF', '#A5F3FF', '#CCFAFF'],

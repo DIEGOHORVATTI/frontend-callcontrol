@@ -62,11 +62,13 @@ export const ChatInterface = ({ socket, onDisconnect }: Props) => {
   return (
     <Card sx={{ height: '90vh', display: 'flex' }}>
       <Stack sx={{ width: 300, borderRight: '1px solid', borderColor: 'divider' }}>
-        <Box sx={{ p: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
+        <Stack sx={{ p: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
+          <Typography variant="h6">{'Diego'}</Typography>
+
           <Button fullWidth variant="outlined" color="error" onClick={onDisconnect}>
             Desconectar
           </Button>
-        </Box>
+        </Stack>
 
         <List sx={{ flexGrow: 1, overflow: 'auto' }}>
           {calls.map((call) => (
