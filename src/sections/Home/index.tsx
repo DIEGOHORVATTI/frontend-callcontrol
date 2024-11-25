@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Box, Container } from '@mui/material'
-import { LoginForm } from './login-form'
+import { LoginForm } from '../Login'
 import { ChatInterface } from './chat-interface'
 import { useSocket } from '../../hooks/use-socket'
 
