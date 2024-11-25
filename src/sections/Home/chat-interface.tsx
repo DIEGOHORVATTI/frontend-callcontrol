@@ -86,12 +86,24 @@ export const ChatInterface = ({ socket, onDisconnect }: Props) => {
               selected={selectedCall?.callId === call.callId}
               onClick={() => setSelectedCall(call)}
             >
-              <ListItemText
-                primary={call.caller}
-                secondary={`Service: ${call.service}`}
-                primaryTypographyProps={{ variant: 'subtitle2', noWrap: true }}
-                secondaryTypographyProps={{ variant: 'caption', noWrap: true }}
-              />
+              <Stack
+                direction="row"
+                spacing={2}
+                alignItems="center"
+                justifyContent="space-between"
+                width={1}
+              >
+                <ListItemText
+                  primary={call.caller}
+                  secondary={`Service: ${call.service}`}
+                  primaryTypographyProps={{ variant: 'subtitle2', noWrap: true }}
+                  secondaryTypographyProps={{ variant: 'caption', noWrap: true }}
+                />
+
+                <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                  {dayjs().diff(dayjs(call.startDate), 'minute')} min
+                </Typography>
+              </Stack>
             </ListItemButton>
           ))}
         </List>

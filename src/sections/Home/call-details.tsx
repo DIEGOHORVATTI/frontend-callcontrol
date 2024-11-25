@@ -25,11 +25,15 @@ export const CallDetails = ({ call, onEndCall }: Props) => (
       </Typography>
 
       <Typography variant="body2">
-        <strong>Service:</strong> {call.service}
+        <strong>Mídia:</strong> {call.media}
       </Typography>
 
       <Typography variant="body2">
-        <strong>Duration:</strong> {dayjs(call.startDate).format('HH:mm A')}
+        <strong>Data Inicial</strong> {dayjs(call.startDate).format('DD/MM/YYYY HH:mm')}
+      </Typography>
+
+      <Typography variant="body2">
+        <strong>Service:</strong> {call.service}
       </Typography>
     </Stack>
   </Stack>
