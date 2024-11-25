@@ -12,21 +12,17 @@ import {
   Typography,
 } from '@mui/material'
 
-import { Call } from '@/hooks/use-socket'
+import { Call, useSocket } from '@/hooks/use-socket'
 
 import dayjs from 'dayjs'
-import { Socket } from 'socket.io-client'
 import { enqueueSnackbar } from 'notistack'
 import { CallDetails } from './call-details'
 
-type Props = {
-  socket: Socket | null
-  onDisconnect: () => void
-}
-
-export const ChatInterface = ({ socket, onDisconnect }: Props) => {
+export const ChatInterface = () => {
   const [calls, setCalls] = useState<Call[]>([])
   const [selectedCall, setSelectedCall] = useState<Call | null>(null)
+
+  const { socket, disconnect } = useSocket()
 
   useEffect(() => {
     if (!socket) return
@@ -74,7 +70,7 @@ export const ChatInterface = ({ socket, onDisconnect }: Props) => {
         <Stack sx={{ p: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
           <Typography variant="h6">{'Diego'}</Typography>
 
-          <Button fullWidth variant="outlined" color="error" onClick={onDisconnect}>
+          <Button fullWidth variant="outlined" color="error" onClick={disconnect}>
             Desconectar
           </Button>
         </Stack>

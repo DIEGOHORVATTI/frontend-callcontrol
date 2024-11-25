@@ -1,22 +1,14 @@
-import { useState } from 'react'
 import { Box, Container } from '@mui/material'
 import { LoginForm } from '../Login'
 import { ChatInterface } from './chat-interface'
 import { useSocket } from '../../hooks/use-socket'
 
 export const Home = () => {
-  const [isConnected, setIsConnected] = useState(false)
-  const { socket, connect, disconnect } = useSocket()
+  const {
+    connected: { isConnected },
+  } = useSocket()
 
-  const handleConnect = (username: string, maxCalls: number) => {
-    connect(username, maxCalls)
-    setIsConnected(true)
-  }
-
-  const handleDisconnect = () => {
-    disconnect()
-    setIsConnected(false)
-  }
+  console.log(isConnected)
 
   return (
     <Box
@@ -27,11 +19,7 @@ export const Home = () => {
       }}
     >
       <Container maxWidth={false} sx={{ minHeight: '100vh', py: 4 }}>
-        {!isConnected ? (
-          <LoginForm onConnect={handleConnect} />
-        ) : (
-          <ChatInterface socket={socket} onDisconnect={handleDisconnect} />
-        )}
+        {!isConnected ? <LoginForm /> : <ChatInterface />}
       </Container>
     </Box>
   )

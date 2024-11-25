@@ -2,6 +2,8 @@ import { useForm } from 'react-hook-form'
 import { Box, Button, Card, Stack, Typography } from '@mui/material'
 import { FormProvider, RHFTextField } from '@/components/hook-form'
 
+import { useSocket } from '@/hooks/use-socket'
+
 import { RHFNumberField } from '@/components/hook-form/rhf-number-field'
 import { SettingMode } from '@/components/SettingMode'
 
@@ -10,21 +12,12 @@ type FormValues = {
   maxCalls: number
 }
 
-type Props = {
-  onConnect: (username: string, maxCalls: number) => void
-}
+export const LoginForm = () => {
+  const { connect } = useSocket()
 
-export const LoginForm = ({ onConnect }: Props) => {
-  const methods = useForm<FormValues>({
-    defaultValues: {
-      username: '',
-      maxCalls: 1,
-    },
-  })
+  const methods = useForm<FormValues>({ defaultValues: { username: '', maxCalls: 10 } })
 
   const { handleSubmit } = methods
-
-  const onSubmit = ({ username, maxCalls }: FormValues) => onConnect(username, maxCalls)
 
   return (
     <Box
@@ -49,7 +42,10 @@ export const LoginForm = ({ onConnect }: Props) => {
           <SettingMode />
         </Card>
 
-        <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+        <FormProvider
+          methods={methods}
+          onSubmit={handleSubmit(({ username, maxCalls }) => connect(username, maxCalls))}
+        >
           <Stack spacing={3}>
             <RHFTextField required name="username" label="Usuário" />
 

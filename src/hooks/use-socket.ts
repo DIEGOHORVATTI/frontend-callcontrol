@@ -59,9 +59,5 @@ export const useSocket = () => {
     }
   }, [])
 
-  return {
-    socket: socketRef.current,
-    connect,
-    disconnect,
-  }
+  return { socket: socketRef.current, connect, disconnect }
 }
