@@ -19,20 +19,20 @@ export const Home = () => {
   }
 
   return (
-    <Container
-      maxWidth="lg"
+    <Box
+      component="main"
       sx={{
         background: (theme) =>
           `linear-gradient(135deg, ${theme.palette.primary.light} 0%, ${theme.palette.secondary.main} 100%)`,
       }}
     >
-      <Box sx={{ minHeight: '100vh', py: 4 }}>
+      <Container maxWidth={false} sx={{ minHeight: '100vh', py: 4 }}>
         {!isConnected ? (
           <LoginForm onConnect={handleConnect} />
         ) : (
           <ChatInterface socket={socket} onDisconnect={handleDisconnect} />
         )}
-      </Box>
-    </Container>
+      </Container>
+    </Box>
   )
 }
