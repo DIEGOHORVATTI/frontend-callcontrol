@@ -9,13 +9,13 @@ import { Iconify } from '../iconify'
 export const RHFNumberField = (props: React.ComponentProps<typeof RHFTextField>) => {
   const { setValue, watch } = useFormContext()
 
-  const value = watch(props.name) ?? 0
+  const [value] = watch([props.name])
 
-  const handleIncrement = () => setValue(props.name, value + 1)
-  const handleDecrement = () => setValue(props.name, Math.max(0, value - 1))
+  const handleIncrement = () => setValue(props.name, +value + 1)
+  const handleDecrement = () => setValue(props.name, Math.max(0, +value - 1))
 
   return (
-    <Stack direction="row" alignItems="center" justifyContent="center">
+    <Stack direction="row" alignItems="flex-start" justifyContent="center">
       <RHFTextField
         fullWidth
         {...props}

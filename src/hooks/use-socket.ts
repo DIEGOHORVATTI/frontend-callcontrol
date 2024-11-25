@@ -29,7 +29,7 @@ export const useSocket = () => {
       })
 
       socketRef.current.on('USER_DISCONNECTED', () => {
-        enqueueSnackbar('Disconnected successfully', { variant: 'info' })
+        enqueueSnackbar('Desconectado com sucesso', { variant: 'info' })
       })
 
       socketRef.current.on('USER_DISCONNECTION_ERROR', (data) => {

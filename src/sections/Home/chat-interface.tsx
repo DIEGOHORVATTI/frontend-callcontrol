@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Socket } from 'socket.io-client'
-import dayjs from 'dayjs'
+
 import {
   Box,
   Button,
@@ -12,7 +11,11 @@ import {
   Stack,
   Typography,
 } from '@mui/material'
-import { Call } from '../../hooks/use-socket'
+
+import { Call } from '@/hooks/use-socket'
+
+import dayjs from 'dayjs'
+import { Socket } from 'socket.io-client'
 import { enqueueSnackbar } from 'notistack'
 
 type Props = {
@@ -30,13 +33,13 @@ export const ChatInterface = ({ socket, onDisconnect }: Props) => {
     socket.on('NEW_CALL', (call: Call) => {
       setCalls((prev) => [...prev, call])
       socket.emit('NEW_CALL_ANSWERED', { callId: call.callId })
-      enqueueSnackbar('New call received', { variant: 'info' })
+      enqueueSnackbar('Nova chamada recebida', { variant: 'info' })
     })
 
     socket.on('CALL_ENDED', ({ callId }) => {
       setCalls((prev) => prev.filter((call) => call.callId !== callId))
       setSelectedCall((prev) => (prev?.callId === callId ? null : prev))
-      enqueueSnackbar('Call ended', { variant: 'info' })
+      enqueueSnackbar('Chamada encerrada', { variant: 'info' })
     })
 
     socket.on('END_CALL_ERROR', ({ error }) => {
@@ -57,11 +60,11 @@ export const ChatInterface = ({ socket, onDisconnect }: Props) => {
   }
 
   return (
-    <Card sx={{ height: '80vh', display: 'flex' }}>
+    <Card sx={{ height: '90vh', display: 'flex' }}>
       <Stack sx={{ width: 300, borderRight: '1px solid', borderColor: 'divider' }}>
         <Box sx={{ p: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
           <Button fullWidth variant="outlined" color="error" onClick={onDisconnect}>
-            Disconnect
+            Desconectar
           </Button>
         </Box>
 
@@ -84,7 +87,7 @@ export const ChatInterface = ({ socket, onDisconnect }: Props) => {
       </Stack>
 
       <Box sx={{ flexGrow: 1, p: 3 }}>
-        {selectedCall ? (
+        {selectedCall && (
           <Stack spacing={3}>
             <Stack
               direction="row"
@@ -98,7 +101,7 @@ export const ChatInterface = ({ socket, onDisconnect }: Props) => {
                 color="error"
                 onClick={() => handleEndCall(selectedCall.callId)}
               >
-                End Call
+                Finalizar
               </Button>
             </Stack>
 
@@ -108,15 +111,19 @@ export const ChatInterface = ({ socket, onDisconnect }: Props) => {
               <Typography variant="body2">
                 <strong>Call ID:</strong> {selectedCall.callId}
               </Typography>
+
               <Typography variant="body2">
                 <strong>Service:</strong> {selectedCall.service}
               </Typography>
+
               <Typography variant="body2">
                 <strong>Duration:</strong> {dayjs(selectedCall.startDate).format('HH:mm A')}
               </Typography>
             </Stack>
           </Stack>
-        ) : (
+        )}
+
+        {!selectedCall && (
           <Box
             sx={{
               height: '100%',
@@ -126,7 +133,7 @@ export const ChatInterface = ({ socket, onDisconnect }: Props) => {
             }}
           >
             <Typography variant="subtitle1" sx={{ color: 'text.secondary' }}>
-              Select a call to view details
+              Selecione uma chamada para ver detalhes
             </Typography>
           </Box>
         )}
