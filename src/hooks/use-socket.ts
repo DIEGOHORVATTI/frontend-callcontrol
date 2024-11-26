@@ -12,7 +12,9 @@ export const useSocket = () => {
   const { user } = useAuth()
 
   const connect = useCallback(() => {
-    if (user && !socketRef.current) {
+    const isUserConnected = user && !socketRef.current
+
+    if (isUserConnected) {
       socketRef.current = io(HOST_API, {
         reconnectionDelayMax: 10_000,
         path: endpoints.callcontrol,
@@ -47,14 +49,10 @@ export const useSocket = () => {
   }, [])
 
   useEffect(() => {
-    if (user) {
-      connect()
-    }
+    if (user) connect()
 
     return () => {
-      if (socketRef.current) {
-        socketRef.current.disconnect()
-      }
+      if (socketRef.current) socketRef.current.disconnect()
     }
   }, [user, connect])
 
