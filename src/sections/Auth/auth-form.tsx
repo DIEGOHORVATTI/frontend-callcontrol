@@ -18,6 +18,12 @@ export const AuthForm = () => {
 
   const { handleSubmit } = methods
 
+  const handle = ({ username, maxCalls }: FormValues) => {
+    const token = generateTokenJWT({ username, maxCalls })
+
+    login(username, maxCalls, token)
+  }
+
   return (
     <Box
       sx={{
@@ -41,10 +47,7 @@ export const AuthForm = () => {
           <SettingMode />
         </Card>
 
-        <FormProvider
-          methods={methods}
-          onSubmit={handleSubmit(({ username, maxCalls }) => login(username, maxCalls, ''))}
-        >
+        <FormProvider methods={methods} onSubmit={handleSubmit(handle)}>
           <Stack spacing={3}>
             <RHFTextField required name="username" label="Usuário" />
 
@@ -65,4 +68,21 @@ export const AuthForm = () => {
       </Card>
     </Box>
   )
+}
+
+const generateTokenJWT = ({ username, maxCalls }: FormValues) => {
+  const header = {
+    alg: 'HS256',
+    typ: 'JWT',
+  }
+
+  const secret = 'secret'
+
+  const encodedHeader = btoa(JSON.stringify(header))
+  const encodedPayload = btoa(JSON.stringify({ username, maxCalls }))
+
+  const signature = btoa(`${encodedHeader}.${encodedPayload}.${secret}`)
+  const token = `${encodedHeader}.${encodedPayload}.${signature}`
+
+  return token
 }
