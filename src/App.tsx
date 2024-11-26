@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
+import { AuthGuard } from '@/guards/auth-guard'
+
 import SnackbarProvider from '@/contexts/snackbar/snackbar-provider'
 import { SettingsProvider } from '@/contexts/settings-provider'
 import { AuthProvider } from '@/contexts/auth-provider'
@@ -8,7 +10,6 @@ import { Home } from '@/sections/Home'
 import { Auth } from '@/sections/Auth'
 
 import { ThemeProvider } from '@/theme'
-import { AuthGuard } from './guards/AuthGuard'
 
 export const App = () => (
   <SettingsProvider
