@@ -39,7 +39,7 @@ export const ChatInterface = () => {
   })
 
   const noCallsMessage = (
-    <Stack sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <Stack sx={{ height: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <BookingIllustration />
 
       <Typography variant="h5" sx={{ color: 'text.secondary' }}>
@@ -72,19 +72,10 @@ export const ChatInterface = () => {
 
         <Box
           ref={parentRef}
-          sx={{
-            flexGrow: 1,
-            overflow: 'auto',
-            height: '100%',
-            position: 'relative',
-          }}
+          sx={{ flexGrow: 1, overflow: 'auto', height: 1, position: 'relative' }}
         >
           <List
-            style={{
-              height: `${virtualizer.getTotalSize()}px`,
-              width: '100%',
-              position: 'relative',
-            }}
+            style={{ height: `${virtualizer.getTotalSize()}px`, width: 1, position: 'relative' }}
           >
             {currentVirtualItems.map((virtualRow) => {
               const call = calls[virtualRow.index]
@@ -132,7 +123,7 @@ export const ChatInterface = () => {
                     position: 'absolute',
                     top: 0,
                     left: 0,
-                    width: '100%',
+                    width: 1,
                     height: `${virtualRow.size}px`,
                     transform: `translateY(${virtualRow.start}px)`,
                   }}
