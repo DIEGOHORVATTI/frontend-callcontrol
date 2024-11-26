@@ -62,7 +62,6 @@ export const ChatInterface = () => {
       setCalls(callsList)
     })
 
-    // Request initial calls list
     socket.emit('GET_CALLS')
 
     return () => {
@@ -77,10 +76,15 @@ export const ChatInterface = () => {
     if (socket) socket.emit('END_CALL', { callId })
   }
 
-  const handleDisconnectSocket = () => {
-    disconnect()
-    logout()
-  }
+  const noCallsMessage = (
+    <Stack sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Iconify icon="line-md:phone-call-loop" size={10} sx={{ color: 'text.secondary' }} />
+
+      <Typography variant="subtitle1" sx={{ color: 'text.secondary' }}>
+        Selecione uma chamada para ver detalhes
+      </Typography>
+    </Stack>
+  )
 
   return (
     <Card sx={{ height: '90vh', display: 'flex' }}>
@@ -158,19 +162,15 @@ export const ChatInterface = () => {
       </Stack>
 
       <Box sx={{ flexGrow: 1, p: 3 }}>
-        {selectedCall ? (
-          <CallDetails call={selectedCall} onEndCall={handleEndCall} />
-        ) : (
-          <Stack
-            sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-          >
-            <Iconify icon="line-md:phone-call-loop" size={10} sx={{ color: 'text.secondary' }} />
-            <Typography variant="subtitle1" sx={{ color: 'text.secondary' }}>
-              Selecione uma chamada para ver detalhes
-            </Typography>
-          </Stack>
-        )}
+        {selectedCall && <CallDetails call={selectedCall} onEndCall={handleEndCall} />}
+
+        {!selectedCall && noCallsMessage}
       </Box>
     </Card>
   )
+
+  function handleDisconnectSocket() {
+    disconnect()
+    logout()
+  }
 }
