@@ -16,6 +16,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user')
+
     if (storedUser) {
       setUser(JSON.parse(storedUser))
     }
@@ -23,7 +24,9 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
 
   const login = useCallback((username: string, maxCalls: number, token: string) => {
     const newUser = { username, maxCalls, token }
+
     setUser(newUser)
+
     localStorage.setItem('user', JSON.stringify(newUser))
   }, [])
 
