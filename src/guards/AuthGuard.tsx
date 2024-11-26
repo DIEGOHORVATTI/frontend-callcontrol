@@ -1,13 +1,9 @@
-import { useState, ReactNode, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { useAuth } from '../contexts/auth-provider'
 
-type Props = {
-  children: ReactNode
-}
-
-export const AuthGuard = ({ children }: Props) => {
+export const AuthGuard = ({ children }: React.PropsWithChildren) => {
   const pathname = window.location.pathname
   const navigate = useNavigate()
 
@@ -27,7 +23,9 @@ export const AuthGuard = ({ children }: Props) => {
       setRequestedLocation(pathname)
     }
 
-    return navigate('/auth')
+    navigate('/auth')
+
+    return
   }
 
   return <>{children}</>

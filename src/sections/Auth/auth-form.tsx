@@ -23,8 +23,6 @@ export const AuthForm = () => {
   const handle = ({ username, maxCalls }: FormValues) => {
     const token = generateJwt({ username, maxCalls })
 
-    console.log(username, maxCalls, token)
-
     login(username, maxCalls, token)
   }
 

@@ -8,6 +8,7 @@ import { Home } from '@/sections/Home'
 import { Auth } from '@/sections/Auth'
 
 import { ThemeProvider } from '@/theme'
+import { AuthGuard } from './guards/AuthGuard'
 
 export const App = () => (
   <SettingsProvider
@@ -21,7 +22,9 @@ export const App = () => (
   >
     <ThemeProvider>
       <SnackbarProvider>
-        <AuthProvider>{routerComponent}</AuthProvider>
+        <AuthProvider>
+          <AuthGuard>{routerComponent}</AuthGuard>
+        </AuthProvider>
       </SnackbarProvider>
     </ThemeProvider>
   </SettingsProvider>
