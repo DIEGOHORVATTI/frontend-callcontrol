@@ -9,13 +9,10 @@ import { endpoints, HOST_API } from '@/constants/config'
 
 export const useSocket = () => {
   const { user } = useAuth()
-
   const socketRef = useRef<Socket | null>(null)
 
   const connect = useCallback(() => {
-    const isUserConnected = user && !socketRef.current
-
-    if (isUserConnected) {
+    if (user && !socketRef.current) {
       socketRef.current = io(HOST_API, {
         reconnectionDelayMax: 10_000,
         path: endpoints.callcontrol,
