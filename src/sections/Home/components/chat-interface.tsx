@@ -39,7 +39,7 @@ export const ChatInterface = () => {
   })
 
   const noCallsMessage = (
-    <Stack sx={{ height: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <Stack sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <BookingIllustration />
 
       <Typography variant="h5" sx={{ color: 'text.secondary' }}>
@@ -72,10 +72,14 @@ export const ChatInterface = () => {
 
         <Box
           ref={parentRef}
-          sx={{ flexGrow: 1, overflow: 'auto', height: 1, position: 'relative' }}
+          sx={{ flexGrow: 1, overflow: 'auto', height: '100%', position: 'relative' }}
         >
           <List
-            style={{ height: `${virtualizer.getTotalSize()}px`, width: 1, position: 'relative' }}
+            style={{
+              height: `${virtualizer.getTotalSize()}px`,
+              width: '100%',
+              position: 'relative',
+            }}
           >
             {currentVirtualItems.map((virtualRow) => {
               const call = calls[virtualRow.index]
@@ -92,7 +96,7 @@ export const ChatInterface = () => {
                   <Stack direction="row" spacing={1}>
                     <Avatar
                       sx={{
-                        fontWeight: 700,
+                        fontWeight: 600,
                         bgcolor: 'primary.main',
                         color: 'primary.contrastText',
                       }}
@@ -123,7 +127,7 @@ export const ChatInterface = () => {
                     position: 'absolute',
                     top: 0,
                     left: 0,
-                    width: 1,
+                    width: '100%',
                     height: `${virtualRow.size}px`,
                     transform: `translateY(${virtualRow.start}px)`,
                   }}
@@ -137,7 +141,9 @@ export const ChatInterface = () => {
       </Stack>
 
       <Box sx={{ flexGrow: 1, p: 3 }}>
-        {selectedCall ? <CallDetails call={selectedCall} onEndCall={onEndCall} /> : noCallsMessage}
+        {selectedCall && <CallDetails call={selectedCall} onEndCall={onEndCall} />}
+
+        {!selectedCall && noCallsMessage}
       </Box>
     </Card>
   )
