@@ -14,6 +14,7 @@ import {
   Typography,
 } from '@mui/material'
 
+import { Iconify } from '@/components'
 import { CallDetails } from './call-details'
 
 import dayjs from 'dayjs'
@@ -61,11 +62,13 @@ export const ChatInterface = () => {
   }
 
   const noCallSelected = (
-    <Box sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <Stack sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Iconify icon="line-md:phone-call-loop" size={10} sx={{ color: 'text.secondary' }} />
+
       <Typography variant="subtitle1" sx={{ color: 'text.secondary' }}>
         Selecione uma chamada para ver detalhes
       </Typography>
-    </Box>
+    </Stack>
   )
 
   return (
