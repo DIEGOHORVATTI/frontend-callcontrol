@@ -26,11 +26,6 @@ export const useSocket = () => {
       socketRef.current.on('connect', () => {
         enqueueSnackbar(`Conectado como ${user.username}`, { variant: 'success' })
 
-        socketRef.current?.emit('USER_CONNECT', {
-          username: user.username,
-          maxCalls: user.maxCalls,
-        })
-
         socketRef.current?.emit('GET_CALLS')
       })
 
@@ -96,9 +91,7 @@ export const useSocket = () => {
   }, [])
 
   useEffect(() => {
-    if (user) {
-      connect()
-    }
+    if (user) connect()
 
     return () => {
       if (socketRef.current) {
