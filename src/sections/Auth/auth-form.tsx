@@ -10,7 +10,7 @@ type FormValues = {
   maxCalls: number
 }
 
-export const LoginForm = () => {
+export const AuthForm = () => {
   const { connect } = useSocket()
 
   const methods = useForm<FormValues>({ defaultValues: { username: '', maxCalls: 10 } })

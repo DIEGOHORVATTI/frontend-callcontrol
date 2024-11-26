@@ -5,7 +5,7 @@ import { SettingsProvider } from '@/contexts/settings'
 import { AuthProvider } from '@/contexts/auth-provider'
 
 import { Home } from '@/sections/Home'
-import { Login } from '@/sections/Login'
+import { Auth } from '@/sections/Auth'
 
 import { ThemeProvider } from '@/theme'
 
@@ -31,7 +31,7 @@ const routerComponent = (
   <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
+      <Route path="/auth" element={<Auth />} />
     </Routes>
   </BrowserRouter>
 )
