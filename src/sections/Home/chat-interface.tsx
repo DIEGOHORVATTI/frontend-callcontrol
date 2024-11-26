@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { useVirtualizer } from '@tanstack/react-virtual'
 
 import { useSocket } from '@/hooks/use-socket'
@@ -19,15 +19,13 @@ import { Iconify } from '@/components'
 import { CallDetails } from './call-details'
 
 import dayjs from 'dayjs'
-import { enqueueSnackbar } from 'notistack'
 
 import type { Call } from '@/types/Call'
 
 export const ChatInterface = () => {
   const { user, logout } = useAuth()
-  const { socket, disconnect } = useSocket()
+  const { calls, disconnect, endCall } = useSocket()
 
-  const [calls, setCalls] = useState<Array<Call>>([])
   const [selectedCall, setSelectedCall] = useState<Call | null>(null)
 
   const parentRef = useRef<HTMLDivElement>(null)
@@ -39,41 +37,9 @@ export const ChatInterface = () => {
     overscan: 5,
   })
 
-  useEffect(() => {
-    if (!socket) return
-
-    socket.on('NEW_CALL', (call: Call) => {
-      setCalls((prev) => [...prev, call])
-      socket.emit('NEW_CALL_ANSWERED', { callId: call.callId })
-      enqueueSnackbar('Nova chamada recebida', { variant: 'info' })
-    })
-
-    socket.on('CALL_ENDED', ({ callId }) => {
-      setCalls((prev) => prev.filter((call) => call.callId !== callId))
-      setSelectedCall((prev) => (prev?.callId === callId ? null : prev))
-      enqueueSnackbar('Chamada encerrada', { variant: 'info' })
-    })
-
-    socket.on('END_CALL_ERROR', ({ error }) => {
-      enqueueSnackbar(error, { variant: 'error' })
-    })
-
-    socket.on('CALLS_LIST', (callsList: Call[]) => {
-      setCalls(callsList)
-    })
-
-    socket.emit('GET_CALLS')
-
-    return () => {
-      socket.off('NEW_CALL')
-      socket.off('CALL_ENDED')
-      socket.off('END_CALL_ERROR')
-      socket.off('CALLS_LIST')
-    }
-  }, [socket])
-
-  const handleEndCall = (callId: string) => {
-    if (socket) socket.emit('END_CALL', { callId })
+  const handleDisconnectSocket = () => {
+    disconnect()
+    logout()
   }
 
   const noCallsMessage = (
@@ -120,8 +86,7 @@ export const ChatInterface = () => {
           >
             {virtualizer.getVirtualItems().map((virtualRow) => {
               const call = calls[virtualRow.index]
-
-              //if (!call) return null
+              if (!call) return null
 
               return (
                 <ListItemButton
@@ -163,15 +128,8 @@ export const ChatInterface = () => {
       </Stack>
 
       <Box sx={{ flexGrow: 1, p: 3 }}>
-        {selectedCall && <CallDetails call={selectedCall} onEndCall={handleEndCall} />}
-
-        {!selectedCall && noCallsMessage}
+        {selectedCall ? <CallDetails call={selectedCall} onEndCall={endCall} /> : noCallsMessage}
       </Box>
     </Card>
   )
-
-  function handleDisconnectSocket() {
-    disconnect()
-    logout()
-  }
 }
