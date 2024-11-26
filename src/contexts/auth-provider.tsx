@@ -1,10 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react'
 
-type User = {
-  username: string
-  maxCalls: number
-  token: string
-}
+import type { User } from '@/types/User'
 
 type AuthContextData = {
   user: User | null
@@ -14,14 +10,6 @@ type AuthContextData = {
 }
 
 const AuthContext = createContext<AuthContextData | undefined>(undefined)
-
-export const useAuth = (): AuthContextData => {
-  const context = useContext(AuthContext)
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider')
-  }
-  return context
-}
 
 export const AuthProvider = ({ children }: React.PropsWithChildren) => {
   const [user, setUser] = useState<User | null>(null)
@@ -49,4 +37,14 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
       {children}
     </AuthContext.Provider>
   )
+}
+
+export const useAuth = (): AuthContextData => {
+  const context = useContext(AuthContext)
+
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider')
+  }
+
+  return context
 }
