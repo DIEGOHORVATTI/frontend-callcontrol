@@ -20,7 +20,7 @@ export default function SnackbarProvider({ children }: Props) {
       maxSnack={5}
       preventDuplicate
       anchorOrigin={{
-        vertical: 'top',
+        vertical: 'bottom',
         horizontal: 'right',
       }}
       autoHideDuration={3000}

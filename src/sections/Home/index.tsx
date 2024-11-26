@@ -1,6 +1,6 @@
 import { MainContent } from '@/components'
 
-import { ChatInterface } from './chat-interface'
+import { ChatInterface } from './components/chat-interface'
 
 export const Home = () => (
   <MainContent>

@@ -1,6 +1,6 @@
 import { MainContent } from '@/components'
 
-import { AuthForm } from './auth-form'
+import { AuthForm } from './components/auth-form'
 
 export const Auth = () => (
   <MainContent>

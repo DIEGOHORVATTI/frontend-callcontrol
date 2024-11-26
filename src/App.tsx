@@ -24,17 +24,17 @@ export const App = () => (
       <SnackbarProvider>
         <AuthProvider>
           <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-            <AuthGuard>{routerComponent}</AuthGuard>
+            <AuthGuard>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/auth" element={<Auth />} />
+
+                <Route path="*" element={<Home />} />
+              </Routes>
+            </AuthGuard>
           </BrowserRouter>
         </AuthProvider>
       </SnackbarProvider>
     </ThemeProvider>
   </SettingsProvider>
-)
-
-const routerComponent = (
-  <Routes>
-    <Route path="/" element={<Home />} />
-    <Route path="/auth" element={<Auth />} />
-  </Routes>
 )
