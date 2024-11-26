@@ -18,14 +18,18 @@ export const AuthGuard = ({ children }: React.PropsWithChildren) => {
     }
   }, [pathname, navigate, requestedLocation])
 
+  console.log({ isAuthenticated })
+
   if (!isAuthenticated) {
     if (pathname !== requestedLocation) {
       setRequestedLocation(pathname)
     }
 
     navigate('/auth')
+  }
 
-    return
+  if (isAuthenticated) {
+    navigate('/')
   }
 
   return <>{children}</>

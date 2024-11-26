@@ -23,7 +23,9 @@ export const App = () => (
     <ThemeProvider>
       <SnackbarProvider>
         <AuthProvider>
-          <AuthGuard>{routerComponent}</AuthGuard>
+          <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+            <AuthGuard>{routerComponent}</AuthGuard>
+          </BrowserRouter>
         </AuthProvider>
       </SnackbarProvider>
     </ThemeProvider>
@@ -31,10 +33,8 @@ export const App = () => (
 )
 
 const routerComponent = (
-  <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/auth" element={<Auth />} />
-    </Routes>
-  </BrowserRouter>
+  <Routes>
+    <Route path="/" element={<Home />} />
+    <Route path="/auth" element={<Auth />} />
+  </Routes>
 )

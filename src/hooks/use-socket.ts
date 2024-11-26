@@ -11,12 +11,10 @@ export const useSocket = () => {
   const socketRef = useRef<Socket | null>(null)
   const { user } = useAuth()
 
-  console.log(user)
-
   const connect = useCallback(() => {
     if (user && !socketRef.current) {
       socketRef.current = io(HOST_API, {
-        reconnectionDelayMax: 10000,
+        reconnectionDelayMax: 10_000,
         path: endpoints.callcontrol,
       })
 
