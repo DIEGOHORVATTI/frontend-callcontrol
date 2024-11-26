@@ -21,8 +21,8 @@ export const useSocket = () => {
         path: endpoints.callcontrol,
       })
 
-      socketRef.current.on('USER_CONNECTED', (data) => {
-        enqueueSnackbar(`Conectado como ${data.username}`, { variant: 'success' })
+      socketRef.current.on('USER_CONNECTED', () => {
+        enqueueSnackbar(`Conectado como ${user.username}`, { variant: 'success' })
       })
 
       socketRef.current.on('USER_CONNECTION_ERROR', (data) => {
