@@ -1,3 +1,4 @@
+import { StrictMode } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 import SnackbarProvider from '@/contexts/snackbar/snackbar-provider'
@@ -10,21 +11,23 @@ import { Login } from '@/sections/Login'
 import { ThemeProvider } from '@/theme'
 
 export const App = () => (
-  <SettingsProvider
-    defaultSettings={{
-      themeMode: 'dark',
-      themeContrast: 'default',
-      themeLayout: 'vertical',
-      themeColorPresets: 'pink',
-      themeStretch: false,
-    }}
-  >
-    <ThemeProvider>
-      <SnackbarProvider>
-        <AuthProvider>{routerComponent}</AuthProvider>
-      </SnackbarProvider>
-    </ThemeProvider>
-  </SettingsProvider>
+  <StrictMode>
+    <SettingsProvider
+      defaultSettings={{
+        themeMode: 'dark',
+        themeContrast: 'default',
+        themeLayout: 'vertical',
+        themeColorPresets: 'pink',
+        themeStretch: false,
+      }}
+    >
+      <ThemeProvider>
+        <SnackbarProvider>
+          <AuthProvider>{routerComponent}</AuthProvider>
+        </SnackbarProvider>
+      </ThemeProvider>
+    </SettingsProvider>
+  </StrictMode>
 )
 
 const routerComponent = (
