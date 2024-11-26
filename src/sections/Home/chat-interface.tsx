@@ -11,14 +11,16 @@ import {
   Typography,
 } from '@mui/material'
 
-import { Call, useSocket } from '@/hooks/use-socket'
+import { useSocket } from '@/hooks/use-socket'
 
 import dayjs from 'dayjs'
 import { enqueueSnackbar } from 'notistack'
 import { CallDetails } from './call-details'
 
+import type { Call } from '@/types/Call'
+
 export const ChatInterface = () => {
-  const [calls, setCalls] = useState<Call[]>([])
+  const [calls, setCalls] = useState<Array<Call>>([])
   const [selectedCall, setSelectedCall] = useState<Call | null>(null)
 
   const { socket, disconnect } = useSocket()

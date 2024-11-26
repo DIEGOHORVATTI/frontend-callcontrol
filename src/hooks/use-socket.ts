@@ -7,14 +7,6 @@ import { useAuth } from '@/contexts/auth-provider'
 import { enqueueSnackbar } from 'notistack'
 import { endpoints, HOST_API } from '@/constants/config'
 
-export type Call = {
-  callId: string
-  media: string
-  startDate: Date
-  service: string
-  caller: string
-}
-
 export const useSocket = () => {
   const socketRef = useRef<Socket | null>(null)
   const { user } = useAuth()

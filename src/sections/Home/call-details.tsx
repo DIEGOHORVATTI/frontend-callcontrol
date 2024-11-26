@@ -1,6 +1,7 @@
 import { Stack, Typography, Button, Divider } from '@mui/material'
 import dayjs from 'dayjs'
-import { Call } from '@/hooks/use-socket'
+
+import type { Call } from '@/types/Call'
 
 type Props = {
   call: Call
