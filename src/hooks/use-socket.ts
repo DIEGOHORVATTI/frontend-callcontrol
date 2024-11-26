@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useRef } from 'react'
 
 import { io, Socket } from 'socket.io-client'
-import { enqueueSnackbar } from 'notistack'
 
+import { useAuth } from '@/contexts/auth-provider'
+
+import { enqueueSnackbar } from 'notistack'
 import { endpoints, HOST_API } from '@/constants/config'
 
 export type Call = {
@@ -15,9 +17,10 @@ export type Call = {
 
 export const useSocket = () => {
   const socketRef = useRef<Socket | null>(null)
+  const { user } = useAuth()
 
-  const connect = useCallback((username: string, maxCalls: number) => {
-    if (!socketRef.current) {
+  const connect = useCallback(() => {
+    if (user && !socketRef.current) {
       socketRef.current = io(HOST_API, {
         reconnectionDelayMax: 10000,
         path: endpoints.callcontrol,
@@ -38,10 +41,10 @@ export const useSocket = () => {
       socketRef.current.on('USER_DISCONNECTION_ERROR', (data) => {
         enqueueSnackbar(data.error, { variant: 'error' })
       })
-    }
 
-    socketRef.current.emit('USER_CONNECT', { username, maxCalls })
-  }, [])
+      socketRef.current.emit('USER_CONNECT', { username: user.username, maxCalls: user.maxCalls })
+    }
+  }, [user])
 
   const disconnect = useCallback(() => {
     if (socketRef.current) {
@@ -52,12 +55,16 @@ export const useSocket = () => {
   }, [])
 
   useEffect(() => {
+    if (user) {
+      connect()
+    }
+
     return () => {
       if (socketRef.current) {
         socketRef.current.disconnect()
       }
     }
-  }, [])
+  }, [user, connect])
 
   return { socket: socketRef.current, connect, disconnect }
 }
