@@ -18,12 +18,14 @@ import { enqueueSnackbar } from 'notistack'
 import { CallDetails } from './call-details'
 
 import type { Call } from '@/types/Call'
+import { useAuth } from '../../contexts/auth-provider'
 
 export const ChatInterface = () => {
+  const { logout } = useAuth()
+  const { socket, disconnect } = useSocket()
+
   const [calls, setCalls] = useState<Array<Call>>([])
   const [selectedCall, setSelectedCall] = useState<Call | null>(null)
-
-  const { socket, disconnect } = useSocket()
 
   useEffect(() => {
     if (!socket) return
@@ -71,7 +73,7 @@ export const ChatInterface = () => {
         <Stack sx={{ p: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
           <Typography variant="h6">{'Diego'}</Typography>
 
-          <Button fullWidth variant="outlined" color="error" onClick={disconnect}>
+          <Button fullWidth variant="outlined" color="error" onClick={handleDisconnectSocket}>
             Desconectar
           </Button>
         </Stack>
@@ -113,4 +115,9 @@ export const ChatInterface = () => {
       </Box>
     </Card>
   )
+
+  function handleDisconnectSocket() {
+    disconnect()
+    logout()
+  }
 }
