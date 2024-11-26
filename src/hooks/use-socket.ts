@@ -8,8 +8,9 @@ import { enqueueSnackbar } from 'notistack'
 import { endpoints, HOST_API } from '@/constants/config'
 
 export const useSocket = () => {
-  const socketRef = useRef<Socket | null>(null)
   const { user } = useAuth()
+
+  const socketRef = useRef<Socket | null>(null)
 
   const connect = useCallback(() => {
     const isUserConnected = user && !socketRef.current
