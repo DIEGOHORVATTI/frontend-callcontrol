@@ -94,12 +94,7 @@ export const ChatInterface = () => {
         <List
           component="div"
           ref={parentRef}
-          sx={{
-            flexGrow: 1,
-            overflow: 'auto',
-            height: '100%',
-            position: 'relative',
-          }}
+          sx={{ flexGrow: 1, overflow: 'auto', height: '100%', position: 'relative' }}
         >
           <div
             style={{
@@ -110,6 +105,27 @@ export const ChatInterface = () => {
           >
             {virtualizer.getVirtualItems().map((virtualRow) => {
               const call = calls[virtualRow.index]
+
+              const chatSummary = (
+                <Stack
+                  direction="row"
+                  spacing={2}
+                  alignItems="center"
+                  justifyContent="space-between"
+                  width={1}
+                >
+                  <ListItemText
+                    primary={call.caller}
+                    secondary={`Service: ${call.service}`}
+                    primaryTypographyProps={{ variant: 'subtitle2', noWrap: true }}
+                    secondaryTypographyProps={{ variant: 'caption', noWrap: true }}
+                  />
+
+                  <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                    {dayjs().diff(dayjs(call.startDate), 'minute')} min
+                  </Typography>
+                </Stack>
+              )
 
               return (
                 <ListItemButton
@@ -122,24 +138,7 @@ export const ChatInterface = () => {
                     transform: `translateY(${virtualRow.start}px)`,
                   }}
                 >
-                  <Stack
-                    direction="row"
-                    spacing={2}
-                    alignItems="center"
-                    justifyContent="space-between"
-                    width={1}
-                  >
-                    <ListItemText
-                      primary={call.caller}
-                      secondary={`Service: ${call.service}`}
-                      primaryTypographyProps={{ variant: 'subtitle2', noWrap: true }}
-                      secondaryTypographyProps={{ variant: 'caption', noWrap: true }}
-                    />
-
-                    <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                      {dayjs().diff(dayjs(call.startDate), 'minute')} min
-                    </Typography>
-                  </Stack>
+                  {chatSummary}
                 </ListItemButton>
               )
             })}
