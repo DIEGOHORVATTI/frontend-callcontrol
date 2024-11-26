@@ -6,6 +6,8 @@ import { Box, Button, Card, Stack, Typography } from '@mui/material'
 
 import { FormProvider, RHFTextField, RHFNumberField, SettingMode } from '@/components'
 
+import { generateJwt } from '@/shared/generate-jwt'
+
 type FormValues = {
   username: string
   maxCalls: number
@@ -19,7 +21,9 @@ export const AuthForm = () => {
   const { handleSubmit } = methods
 
   const handle = ({ username, maxCalls }: FormValues) => {
-    const token = generateTokenJWT({ username, maxCalls })
+    const token = generateJwt({ username, maxCalls })
+
+    console.log(username, maxCalls, token)
 
     login(username, maxCalls, token)
   }
@@ -68,21 +72,4 @@ export const AuthForm = () => {
       </Card>
     </Box>
   )
-}
-
-const generateTokenJWT = ({ username, maxCalls }: FormValues) => {
-  const header = {
-    alg: 'HS256',
-    typ: 'JWT',
-  }
-
-  const secret = 'secret'
-
-  const encodedHeader = btoa(JSON.stringify(header))
-  const encodedPayload = btoa(JSON.stringify({ username, maxCalls }))
-
-  const signature = btoa(`${encodedHeader}.${encodedPayload}.${secret}`)
-  const token = `${encodedHeader}.${encodedPayload}.${signature}`
-
-  return token
 }
