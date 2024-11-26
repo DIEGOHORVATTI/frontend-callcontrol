@@ -1,16 +1,17 @@
 import { useState, ReactNode, useEffect } from 'react'
-
 import { useNavigate } from 'react-router-dom'
+
+import { useAuth } from '../contexts/auth-provider'
 
 type Props = {
   children: ReactNode
 }
 
-export default function AuthGuard({ children }: Props) {
+export const AuthGuard = ({ children }: Props) => {
   const pathname = window.location.pathname
   const navigate = useNavigate()
 
-  const { isAuthenticated, isInitialized } = useAuth()
+  const { isAuthenticated } = useAuth()
 
   const [requestedLocation, setRequestedLocation] = useState<string | null>(null)
 
@@ -21,16 +22,12 @@ export default function AuthGuard({ children }: Props) {
     }
   }, [pathname, navigate, requestedLocation])
 
-  if (!isInitialized) {
-    return navigate('/login')
-  }
-
   if (!isAuthenticated) {
     if (pathname !== requestedLocation) {
       setRequestedLocation(pathname)
     }
 
-    return navigate('/login')
+    return navigate('/auth')
   }
 
   return <>{children}</>
