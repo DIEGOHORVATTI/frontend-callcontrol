@@ -58,10 +58,12 @@ export const ChatInterface = () => {
       enqueueSnackbar(error, { variant: 'error' })
     })
 
-    socket.emit('GET_CALLS')
     socket.on('CALLS_LIST', (callsList: Call[]) => {
       setCalls(callsList)
     })
+
+    // Request initial calls list
+    socket.emit('GET_CALLS')
 
     return () => {
       socket.off('NEW_CALL')
@@ -73,6 +75,11 @@ export const ChatInterface = () => {
 
   const handleEndCall = (callId: string) => {
     if (socket) socket.emit('END_CALL', { callId })
+  }
+
+  const handleDisconnectSocket = () => {
+    disconnect()
+    logout()
   }
 
   return (
@@ -91,12 +98,16 @@ export const ChatInterface = () => {
           </Button>
         </Stack>
 
-        <List
-          component="div"
+        <Box
           ref={parentRef}
-          sx={{ flexGrow: 1, overflow: 'auto', height: '100%', position: 'relative' }}
+          sx={{
+            flexGrow: 1,
+            overflow: 'auto',
+            height: '100%',
+            position: 'relative',
+          }}
         >
-          <div
+          <List
             style={{
               height: `${virtualizer.getTotalSize()}px`,
               width: '100%',
@@ -105,27 +116,7 @@ export const ChatInterface = () => {
           >
             {virtualizer.getVirtualItems().map((virtualRow) => {
               const call = calls[virtualRow.index]
-
-              const chatSummary = (
-                <Stack
-                  direction="row"
-                  spacing={2}
-                  alignItems="center"
-                  justifyContent="space-between"
-                  width={1}
-                >
-                  <ListItemText
-                    primary={call.caller}
-                    secondary={`Service: ${call.service}`}
-                    primaryTypographyProps={{ variant: 'subtitle2', noWrap: true }}
-                    secondaryTypographyProps={{ variant: 'caption', noWrap: true }}
-                  />
-
-                  <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                    {dayjs().diff(dayjs(call.startDate), 'minute')} min
-                  </Typography>
-                </Stack>
-              )
+              if (!call) return null
 
               return (
                 <ListItemButton
@@ -133,39 +124,53 @@ export const ChatInterface = () => {
                   selected={selectedCall?.callId === call.callId}
                   onClick={() => setSelectedCall(call)}
                   style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
                     width: '100%',
                     height: `${virtualRow.size}px`,
                     transform: `translateY(${virtualRow.start}px)`,
                   }}
                 >
-                  {chatSummary}
+                  <Stack
+                    direction="row"
+                    spacing={2}
+                    alignItems="center"
+                    justifyContent="space-between"
+                    width={1}
+                  >
+                    <ListItemText
+                      primary={call.caller}
+                      secondary={`Service: ${call.service}`}
+                      primaryTypographyProps={{ variant: 'subtitle2', noWrap: true }}
+                      secondaryTypographyProps={{ variant: 'caption', noWrap: true }}
+                    />
+
+                    <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                      {dayjs().diff(dayjs(call.startDate), 'minute')} min
+                    </Typography>
+                  </Stack>
                 </ListItemButton>
               )
             })}
-          </div>
-        </List>
+          </List>
+        </Box>
       </Stack>
 
       <Box sx={{ flexGrow: 1, p: 3 }}>
-        {selectedCall && <CallDetails call={selectedCall} onEndCall={handleEndCall} />}
-
-        {!selectedCall && noCallSelected}
+        {selectedCall ? (
+          <CallDetails call={selectedCall} onEndCall={handleEndCall} />
+        ) : (
+          <Stack
+            sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+          >
+            <Iconify icon="line-md:phone-call-loop" size={10} sx={{ color: 'text.secondary' }} />
+            <Typography variant="subtitle1" sx={{ color: 'text.secondary' }}>
+              Selecione uma chamada para ver detalhes
+            </Typography>
+          </Stack>
+        )}
       </Box>
     </Card>
   )
-
-  function handleDisconnectSocket() {
-    disconnect()
-    logout()
-  }
 }
-
-const noCallSelected = (
-  <Stack sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-    <Iconify icon="line-md:phone-call-loop" size={10} sx={{ color: 'text.secondary' }} />
-
-    <Typography variant="subtitle1" sx={{ color: 'text.secondary' }}>
-      Selecione uma chamada para ver detalhes
-    </Typography>
-  </Stack>
-)
