@@ -22,7 +22,7 @@ import { enqueueSnackbar } from 'notistack'
 import type { Call } from '@/types/Call'
 
 export const ChatInterface = () => {
-  const { logout } = useAuth()
+  const { logout, user } = useAuth()
   const { socket, disconnect } = useSocket()
 
   const [calls, setCalls] = useState<Array<Call>>([])
@@ -71,10 +71,15 @@ export const ChatInterface = () => {
   return (
     <Card sx={{ height: '90vh', display: 'flex' }}>
       <Stack sx={{ width: 300, borderRight: '1px solid', borderColor: 'divider' }}>
-        <Stack sx={{ p: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
-          <Typography variant="h6">{'Diego'}</Typography>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          sx={{ p: 2, borderBottom: '1px solid', borderColor: 'divider' }}
+        >
+          <Typography variant="h6">{user?.username}</Typography>
 
-          <Button fullWidth variant="outlined" color="error" onClick={handleDisconnectSocket}>
+          <Button variant="outlined" color="error" onClick={handleDisconnectSocket}>
             Desconectar
           </Button>
         </Stack>
