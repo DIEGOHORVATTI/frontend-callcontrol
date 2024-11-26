@@ -14,7 +14,7 @@ export const useSocket = () => {
   const connect = useCallback(() => {
     if (user && !socketRef.current) {
       socketRef.current = io(HOST_API, {
-        reconnectionDelayMax: 10_000,
+        reconnectionDelayMax: 10000,
         path: endpoints.callcontrol,
       })
 
@@ -52,7 +52,7 @@ export const useSocket = () => {
     return () => {
       if (socketRef.current) socketRef.current.disconnect()
     }
-  }, [user, connect])
+  }, [user])
 
-  return { socket: socketRef.current, connect, disconnect }
+  return { socket: socketRef.current, disconnect }
 }

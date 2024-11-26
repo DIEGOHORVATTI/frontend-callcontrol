@@ -26,6 +26,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
 
   const logout = useCallback(() => {
     setUser(null)
+
     localStorage.removeItem(STORAGE_KEYS.USER_DATA)
   }, [])
 

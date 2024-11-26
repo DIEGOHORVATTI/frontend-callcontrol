@@ -120,7 +120,8 @@ export const ChatInterface = () => {
           >
             {virtualizer.getVirtualItems().map((virtualRow) => {
               const call = calls[virtualRow.index]
-              if (!call) return null
+
+              //if (!call) return null
 
               return (
                 <ListItemButton
