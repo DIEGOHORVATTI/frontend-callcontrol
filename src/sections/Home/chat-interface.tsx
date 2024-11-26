@@ -37,11 +37,6 @@ export const ChatInterface = () => {
     overscan: 5,
   })
 
-  const handleDisconnectSocket = () => {
-    disconnect()
-    logout()
-  }
-
   const noCallsMessage = (
     <Stack sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <Iconify icon="line-md:phone-call-loop" size={10} sx={{ color: 'text.secondary' }} />
@@ -88,6 +83,27 @@ export const ChatInterface = () => {
               const call = calls[virtualRow.index]
               if (!call) return null
 
+              const callDetail = (
+                <Stack
+                  direction="row"
+                  spacing={2}
+                  alignItems="center"
+                  justifyContent="space-between"
+                  width={1}
+                >
+                  <ListItemText
+                    primary={call.caller}
+                    secondary={`Service: ${call.service}`}
+                    primaryTypographyProps={{ variant: 'subtitle2', noWrap: true }}
+                    secondaryTypographyProps={{ variant: 'caption', noWrap: true }}
+                  />
+
+                  <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                    {dayjs().diff(dayjs(call.startDate), 'minute')} min
+                  </Typography>
+                </Stack>
+              )
+
               return (
                 <ListItemButton
                   key={call.callId}
@@ -102,24 +118,7 @@ export const ChatInterface = () => {
                     transform: `translateY(${virtualRow.start}px)`,
                   }}
                 >
-                  <Stack
-                    direction="row"
-                    spacing={2}
-                    alignItems="center"
-                    justifyContent="space-between"
-                    width={1}
-                  >
-                    <ListItemText
-                      primary={call.caller}
-                      secondary={`Service: ${call.service}`}
-                      primaryTypographyProps={{ variant: 'subtitle2', noWrap: true }}
-                      secondaryTypographyProps={{ variant: 'caption', noWrap: true }}
-                    />
-
-                    <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                      {dayjs().diff(dayjs(call.startDate), 'minute')} min
-                    </Typography>
-                  </Stack>
+                  {callDetail}
                 </ListItemButton>
               )
             })}
@@ -128,8 +127,19 @@ export const ChatInterface = () => {
       </Stack>
 
       <Box sx={{ flexGrow: 1, p: 3 }}>
-        {selectedCall ? <CallDetails call={selectedCall} onEndCall={endCall} /> : noCallsMessage}
+        {selectedCall ? <CallDetails call={selectedCall} onEndCall={onEndCall} /> : noCallsMessage}
       </Box>
     </Card>
   )
+
+  function onEndCall() {
+    if (selectedCall?.callId) endCall(selectedCall.callId)
+
+    setSelectedCall(null)
+  }
+
+  function handleDisconnectSocket() {
+    disconnect()
+    logout()
+  }
 }

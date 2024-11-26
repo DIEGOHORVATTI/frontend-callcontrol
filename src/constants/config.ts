@@ -1,4 +1,4 @@
-export const HOST_API = 'http://dev.digitro.com'
+export const HOST_API = 'dev.digitro.com'
 
 export const endpoints = {
   callcontrol: '/callcontrol',

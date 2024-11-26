@@ -75,6 +75,7 @@ export const useSocket = () => {
   const endCall = useCallback((callId: string) => {
     if (socketRef.current) {
       socketRef.current.emit('END_CALL', { callId })
+      socketRef.current.emit('GET_CALLS')
     }
   }, [])
 
