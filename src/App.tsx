@@ -1,12 +1,13 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
-import { ThemeProvider } from './theme'
-
-import SnackbarProvider from './contexts/snackbar/snackbar-provider'
+import SnackbarProvider from '@/contexts/snackbar/snackbar-provider'
+import { SettingsProvider } from '@/contexts/settings'
+import { AuthProvider } from '@/contexts/auth-provider'
 
 import { Home } from '@/sections/Home'
+import { LoginForm } from '@/sections/Login'
 
-import { SettingsProvider } from './contexts/settings'
+import { ThemeProvider } from '@/theme'
 
 export const App = () => (
   <SettingsProvider
@@ -20,11 +21,14 @@ export const App = () => (
   >
     <ThemeProvider>
       <SnackbarProvider>
-        <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-          </Routes>
-        </BrowserRouter>
+        <AuthProvider>
+          <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<LoginForm />} />
+            </Routes>
+          </BrowserRouter>
+        </AuthProvider>
       </SnackbarProvider>
     </ThemeProvider>
   </SettingsProvider>
