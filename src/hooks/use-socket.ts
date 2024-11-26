@@ -20,38 +20,52 @@ export const useSocket = () => {
       socketRef.current = io(HOST_API, {
         reconnectionDelayMax: 10_000,
         path: endpoints.callcontrol,
+        forceNew: true,
       })
 
-      socketRef.current.on('USER_CONNECTED', () => {
+      socketRef.current.on('connect', () => {
         enqueueSnackbar(`Conectado como ${user.username}`, { variant: 'success' })
+
+        socketRef.current?.emit('USER_CONNECT', {
+          username: user.username,
+          maxCalls: user.maxCalls,
+        })
+
+        socketRef.current?.emit('GET_CALLS')
       })
+
+      socketRef.current.on('disconnect', () => {
+        enqueueSnackbar('Socket desconectado', { variant: 'warning' })
+      })
+
+      socketRef.current.on('USER_CONNECTED', () => {})
 
       socketRef.current.on('USER_CONNECTION_ERROR', (data) => {
-        enqueueSnackbar(data.error, { variant: 'error' })
-      })
-
-      socketRef.current.on('USER_DISCONNECTED', () => {
-        enqueueSnackbar('Desconectado com sucesso', { variant: 'info' })
-      })
-
-      socketRef.current.on('USER_DISCONNECTION_ERROR', (data) => {
+        console.error('USER_CONNECTION_ERROR:', data.error)
         enqueueSnackbar(data.error, { variant: 'error' })
       })
 
       socketRef.current.on('NEW_CALL', (call: Call) => {
         socketRef.current?.emit('NEW_CALL_ANSWERED', { callId: call.callId })
-        setCalls((prev) => [...prev, call])
+        setCalls((prev) => {
+          const updatedCalls = [...prev, call]
 
+          return updatedCalls
+        })
         enqueueSnackbar('Nova chamada recebida', { variant: 'info' })
       })
 
       socketRef.current.on('CALL_ENDED', ({ callId }) => {
-        setCalls((prev) => prev.filter((call) => call.callId !== callId))
+        setCalls((prev) => {
+          const updatedCalls = prev.filter((call) => call.callId !== callId)
 
+          return updatedCalls
+        })
         enqueueSnackbar('Chamada encerrada', { variant: 'info' })
       })
 
       socketRef.current.on('END_CALL_ERROR', ({ error }) => {
+        console.error('END_CALL_ERROR:', error)
         enqueueSnackbar(error, { variant: 'error' })
       })
 
@@ -82,10 +96,14 @@ export const useSocket = () => {
   }, [])
 
   useEffect(() => {
-    if (user) connect()
+    if (user) {
+      connect()
+    }
 
     return () => {
-      if (socketRef.current) socketRef.current.disconnect()
+      if (socketRef.current) {
+        disconnect()
+      }
     }
   }, [user, connect])
 
