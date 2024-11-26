@@ -63,6 +63,10 @@ export const ChatInterface = () => {
           </Button>
         </Stack>
 
+        <Typography variant="button" px={2} py={1}>
+          Chamadas ativas ({calls.length})
+        </Typography>
+
         <Box
           ref={parentRef}
           sx={{
