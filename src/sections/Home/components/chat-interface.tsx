@@ -5,6 +5,7 @@ import { useSocket } from '@/hooks/use-socket'
 import { useAuth } from '@/hooks/use-auth'
 
 import {
+  Avatar,
   Box,
   Button,
   Card,
@@ -47,6 +48,8 @@ export const ChatInterface = () => {
     </Stack>
   )
 
+  const currentVirtualItems = virtualizer.getVirtualItems()
+
   return (
     <Card sx={{ height: '90vh', display: 'flex' }}>
       <Stack sx={{ width: 300, borderRight: '1px solid', borderColor: 'divider' }}>
@@ -83,7 +86,7 @@ export const ChatInterface = () => {
               position: 'relative',
             }}
           >
-            {virtualizer.getVirtualItems().map((virtualRow) => {
+            {currentVirtualItems.map((virtualRow) => {
               const call = calls[virtualRow.index]
               if (!call) return null
 
@@ -95,12 +98,24 @@ export const ChatInterface = () => {
                   justifyContent="space-between"
                   width={1}
                 >
-                  <ListItemText
-                    primary={call.caller}
-                    secondary={`Service: ${call.service}`}
-                    primaryTypographyProps={{ variant: 'subtitle2', noWrap: true }}
-                    secondaryTypographyProps={{ variant: 'caption', noWrap: true }}
-                  />
+                  <Stack direction="row" spacing={1}>
+                    <Avatar
+                      sx={{
+                        fontWeight: 700,
+                        bgcolor: 'primary.main',
+                        color: 'primary.contrastText',
+                      }}
+                    >
+                      {call.caller[0]}
+                    </Avatar>
+
+                    <ListItemText
+                      primary={call.caller}
+                      secondary={`Service: ${call.service}`}
+                      primaryTypographyProps={{ variant: 'subtitle2', noWrap: true }}
+                      secondaryTypographyProps={{ variant: 'caption', noWrap: true }}
+                    />
+                  </Stack>
 
                   <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                     {dayjs().diff(dayjs(call.startDate), 'minute')} min
