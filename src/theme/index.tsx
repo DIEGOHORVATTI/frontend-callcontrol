@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
-import merge from 'lodash/merge'
+
+import { useSettings } from '@/hooks/use-settings'
 
 import CssBaseline from '@mui/material/CssBaseline'
 import { createTheme, ThemeProvider as MuiThemeProvider, ThemeOptions } from '@mui/material/styles'
@@ -16,12 +17,11 @@ import { presets } from './options/presets'
 import { darkMode } from './options/dark-mode'
 import { contrast } from './options/contrast'
 
+import merge from 'lodash/merge'
 import NextAppDirEmotionCacheProvider from './next-emotion-cache'
 
-import { useSettingsContext } from '../contexts/settings-provider'
-
 export const ThemeProvider = ({ children }: React.PropsWithChildren) => {
-  const settings = useSettingsContext()
+  const settings = useSettings()
 
   const darkModeOption = darkMode(settings.themeMode)
 

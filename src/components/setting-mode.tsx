@@ -1,13 +1,14 @@
+import { useSettings } from '@/hooks/use-settings'
+
 import { IconButton, Stack, ButtonBase } from '@mui/material'
 import { alpha } from '@mui/material/styles'
 
 import { Iconify } from '@/components'
-import { useSettingsContext } from '@/contexts/settings-provider'
 
 import { primaryPresets } from '@/theme/options/presets'
 
 export const SettingMode = () => {
-  const { onToggleMode, themeMode } = useSettingsContext()
+  const { onToggleMode, themeMode } = useSettings()
 
   return (
     <Stack direction="row" spacing={1} alignItems="center" justifyContent="space-between">
@@ -26,7 +27,7 @@ export const SettingMode = () => {
 }
 
 const PresetsOptions = () => {
-  const { themeColorPresets, onPresetsChange } = useSettingsContext()
+  const { themeColorPresets, onPresetsChange } = useSettings()
 
   const options = primaryPresets.map(({ name, main }) => ({ name, main }))
 
