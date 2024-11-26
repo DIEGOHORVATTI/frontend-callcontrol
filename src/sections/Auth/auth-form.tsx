@@ -1,9 +1,10 @@
+import { useForm } from 'react-hook-form'
+
+import { useAuth } from '@/contexts/auth-provider'
+
 import { Box, Button, Card, Stack, Typography } from '@mui/material'
 
 import { FormProvider, RHFTextField, RHFNumberField, SettingMode } from '@/components'
-
-import { useForm } from 'react-hook-form'
-import { useSocket } from '@/hooks/use-socket'
 
 type FormValues = {
   username: string
@@ -11,7 +12,7 @@ type FormValues = {
 }
 
 export const AuthForm = () => {
-  const { connect } = useSocket()
+  const { login } = useAuth()
 
   const methods = useForm<FormValues>({ defaultValues: { username: '', maxCalls: 10 } })
 
@@ -42,7 +43,7 @@ export const AuthForm = () => {
 
         <FormProvider
           methods={methods}
-          onSubmit={handleSubmit(({ username, maxCalls }) => connect(username, maxCalls))}
+          onSubmit={handleSubmit(({ username, maxCalls }) => login(username, maxCalls, ''))}
         >
           <Stack spacing={3}>
             <RHFTextField required name="username" label="Usuário" />
