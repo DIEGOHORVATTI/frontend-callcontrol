@@ -1,10 +1,10 @@
 import { Stack, Typography, Button, Divider } from '@mui/material'
 import dayjs from 'dayjs'
 
-import type { Call } from '@/types/Call'
+import type { ICall } from '@/types/ICall'
 
 type Props = {
-  call: Call
+  call: ICall
   onEndCall: (callId: string) => void
 }
 

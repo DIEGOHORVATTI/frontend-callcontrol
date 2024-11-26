@@ -2,11 +2,13 @@ import React, { createContext, useState, useEffect, useCallback } from 'react'
 
 import { STORAGE_KEYS } from '@/constants/config'
 
-import type { User } from '@/types/User'
+import { decodeJwt } from '@/shared/decode-jwt'
+
+import type { IUser } from '@/types/IUser'
 
 export type IAuthContext = {
-  user: User | null
-  login: (username: string, maxCalls: number, token: string) => void
+  user: IUser | null
+  login: (token: string) => void
   logout: () => void
   isAuthenticated: boolean
 }
@@ -14,29 +16,35 @@ export type IAuthContext = {
 export const AuthContext = createContext<IAuthContext | undefined>(undefined)
 
 export const AuthProvider = ({ children }: React.PropsWithChildren) => {
-  const [user, setUser] = useState<User | null>(null)
+  const [user, setUser] = useState<IUser | null>(null)
 
-  const login = useCallback((username: string, maxCalls: number, token: string) => {
-    const newUser = { username, maxCalls, token }
+  const login = useCallback((token: string) => {
+    const decodedUser = decodeJwt<IUser>(token)
 
-    setUser(newUser)
-
-    localStorage.setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(newUser))
+    if (decodedUser) {
+      setUser(decodedUser)
+      localStorage.setItem(STORAGE_KEYS.USER_TOKEN, token)
+    }
   }, [])
 
   const logout = useCallback(() => {
     setUser(null)
-
-    localStorage.removeItem(STORAGE_KEYS.USER_DATA)
+    localStorage.removeItem(STORAGE_KEYS.USER_TOKEN)
   }, [])
 
   useEffect(() => {
-    const storedUser = localStorage.getItem(STORAGE_KEYS.USER_DATA)
+    const storedToken = localStorage.getItem(STORAGE_KEYS.USER_TOKEN)
 
-    if (storedUser) {
-      setUser(JSON.parse(storedUser))
+    if (storedToken) {
+      try {
+        const decodedUser = decodeJwt<IUser>(storedToken)
+
+        setUser(decodedUser)
+      } catch (error) {
+        logout()
+      }
     }
-  }, [])
+  }, [logout])
 
   return (
     <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!user }}>

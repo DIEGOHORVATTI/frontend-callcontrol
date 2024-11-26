@@ -1,4 +1,4 @@
-export type Call = {
+export type ICall = {
   callId: string
   media: string
   startDate: Date

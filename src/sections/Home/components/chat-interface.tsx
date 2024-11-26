@@ -20,13 +20,13 @@ import { CallDetails } from './call-details'
 
 import dayjs from 'dayjs'
 
-import type { Call } from '@/types/Call'
+import type { ICall } from '@/types/ICall'
 
 export const ChatInterface = () => {
   const { user, logout } = useAuth()
   const { calls, disconnect, endCall } = useSocket()
 
-  const [selectedCall, setSelectedCall] = useState<Call | null>(null)
+  const [selectedCall, setSelectedCall] = useState<ICall | null>(null)
 
   const parentRef = useRef<HTMLDivElement>(null)
 

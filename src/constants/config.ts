@@ -6,5 +6,5 @@ export const endpoints = {
 
 export const STORAGE_KEYS = {
   SETTINGS: '@digitro-settings',
-  USER_DATA: '@digitro-user',
+  USER_TOKEN: '@digitro-user',
 }

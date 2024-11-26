@@ -6,14 +6,14 @@ import { enqueueSnackbar } from 'notistack'
 import { useAuth } from '@/hooks/use-auth'
 import { endpoints, HOST_API } from '@/constants/config'
 
-import type { Call } from '@/types/Call'
+import type { ICall } from '@/types/ICall'
 
 export const useSocket = () => {
   const { user } = useAuth()
 
   const socketRef = useRef<Socket | null>(null)
 
-  const [calls, setCalls] = useState<Array<Call>>([])
+  const [calls, setCalls] = useState<Array<ICall>>([])
 
   const connect = useCallback(() => {
     if (user && !socketRef.current) {
@@ -40,7 +40,7 @@ export const useSocket = () => {
         enqueueSnackbar(data.error, { variant: 'error' })
       })
 
-      socketRef.current.on('NEW_CALL', (call: Call) => {
+      socketRef.current.on('NEW_CALL', (call: ICall) => {
         socketRef.current?.emit('NEW_CALL_ANSWERED', { callId: call.callId })
         setCalls((prev) => {
           const updatedCalls = [...prev, call]
@@ -64,7 +64,7 @@ export const useSocket = () => {
         enqueueSnackbar(error, { variant: 'error' })
       })
 
-      socketRef.current.on('CALLS_LIST', (callsList: Call[]) => {
+      socketRef.current.on('CALLS_LIST', (callsList: ICall[]) => {
         setCalls(callsList)
       })
 
