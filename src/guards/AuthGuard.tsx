@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { useAuth } from '@/contexts/auth-provider'
+import { useAuth } from '@/hooks/use-auth'
 
 export const AuthGuard = ({ children }: React.PropsWithChildren) => {
   const { isAuthenticated } = useAuth()

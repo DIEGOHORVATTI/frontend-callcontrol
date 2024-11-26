@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { io, Socket } from 'socket.io-client'
 import { enqueueSnackbar } from 'notistack'
 
-import { useAuth } from '@/contexts/auth-provider'
+import { useAuth } from '@/hooks/use-auth'
 import { endpoints, HOST_API } from '@/constants/config'
 
 import type { Call } from '@/types/Call'

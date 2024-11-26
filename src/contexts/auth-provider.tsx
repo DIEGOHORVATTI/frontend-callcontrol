@@ -1,17 +1,17 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react'
+import React, { createContext, useState, useEffect, useCallback } from 'react'
 
 import { STORAGE_KEYS } from '@/constants/config'
 
 import type { User } from '@/types/User'
 
-type AuthContextData = {
+export type IAuthContext = {
   user: User | null
   login: (username: string, maxCalls: number, token: string) => void
   logout: () => void
   isAuthenticated: boolean
 }
 
-const AuthContext = createContext<AuthContextData | undefined>(undefined)
+export const AuthContext = createContext<IAuthContext | undefined>(undefined)
 
 export const AuthProvider = ({ children }: React.PropsWithChildren) => {
   const [user, setUser] = useState<User | null>(null)
@@ -43,14 +43,4 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
       {children}
     </AuthContext.Provider>
   )
-}
-
-export const useAuth = (): AuthContextData => {
-  const context = useContext(AuthContext)
-
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider')
-  }
-
-  return context
 }

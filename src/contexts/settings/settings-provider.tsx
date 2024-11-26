@@ -1,31 +1,42 @@
-import { useMemo } from 'react'
+import { createContext, useMemo } from 'react'
 
 import { useLocalStorage } from '@/hooks/use-local-storage'
 
-import { SettingsContext } from './settings-context'
-
 import { STORAGE_KEYS } from '@/constants/config'
 
-import { SettingsContextProps, SettingsValueProps } from './types'
+import { COMMON } from '@/theme/palette'
+
+type ISettingsValue = {
+  themeStretch: boolean
+  themeMode: 'light' | 'dark'
+  themeContrast: 'default' | 'bold'
+  themeLayout: 'vertical' | 'horizontal' | 'mini'
+  themeColorPresets: keyof typeof COMMON
+}
+
+export type ISettings = ISettingsValue & {
+  onUpdate: (value: ISettingsValue) => void
+  onToggleMode: () => void
+  onPresetsChange: (value: ISettingsValue['themeColorPresets']) => void
+}
 
 type Props = {
   children: React.ReactNode
-  defaultSettings: SettingsValueProps
+  defaultSettings: ISettingsValue
 }
 
+export const SettingsContext = createContext({} as ISettings)
+
 export const SettingsProvider = ({ children, defaultSettings }: Props) => {
-  const { state, update } = useLocalStorage<SettingsValueProps>(
-    STORAGE_KEYS.SETTINGS,
-    defaultSettings
-  )
+  const { state, update } = useLocalStorage<ISettingsValue>(STORAGE_KEYS.SETTINGS, defaultSettings)
 
   const onToggleMode = () =>
     update({ ...state, themeMode: state.themeMode === 'light' ? 'dark' : 'light' })
 
-  const onPresetsChange = (themeColorPresets: SettingsValueProps['themeColorPresets']) =>
+  const onPresetsChange = (themeColorPresets: ISettingsValue['themeColorPresets']) =>
     update({ ...state, themeColorPresets })
 
-  const memoizedValue = useMemo<SettingsContextProps>(
+  const memoizedValue = useMemo<ISettings>(
     () => ({
       ...state,
       onToggleMode,

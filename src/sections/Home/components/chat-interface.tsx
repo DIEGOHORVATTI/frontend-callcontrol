@@ -2,7 +2,7 @@ import { useState, useRef } from 'react'
 import { useVirtualizer } from '@tanstack/react-virtual'
 
 import { useSocket } from '@/hooks/use-socket'
-import { useAuth } from '@/contexts/auth-provider'
+import { useAuth } from '@/hooks/use-auth'
 
 import {
   Box,
