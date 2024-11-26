@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
 
+import { useSocket } from '@/hooks/use-socket'
+import { useAuth } from '@/contexts/auth-provider'
+
 import {
   Box,
   Button,
@@ -11,14 +14,12 @@ import {
   Typography,
 } from '@mui/material'
 
-import { useSocket } from '@/hooks/use-socket'
+import { CallDetails } from './call-details'
 
 import dayjs from 'dayjs'
 import { enqueueSnackbar } from 'notistack'
-import { CallDetails } from './call-details'
 
 import type { Call } from '@/types/Call'
-import { useAuth } from '../../contexts/auth-provider'
 
 export const ChatInterface = () => {
   const { logout } = useAuth()
