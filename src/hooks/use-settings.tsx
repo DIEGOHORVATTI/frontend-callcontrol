@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 
-import { SettingsContext, type ISettings } from '@/contexts/settings/settings-provider'
+import { SettingsContext, type ISettings } from '@/contexts/settings-provider'
 
 export const useSettings = (): ISettings => {
   const context = useContext(SettingsContext)

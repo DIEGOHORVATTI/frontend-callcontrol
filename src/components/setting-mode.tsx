@@ -2,7 +2,7 @@ import { IconButton, Stack, ButtonBase } from '@mui/material'
 import { alpha } from '@mui/material/styles'
 
 import { Iconify } from '@/components'
-import { useSettingsContext } from '@/contexts/settings'
+import { useSettingsContext } from '@/contexts/settings-provider'
 
 import { primaryPresets } from '@/theme/options/presets'
 

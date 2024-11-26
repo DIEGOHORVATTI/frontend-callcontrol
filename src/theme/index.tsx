@@ -18,7 +18,7 @@ import { contrast } from './options/contrast'
 
 import NextAppDirEmotionCacheProvider from './next-emotion-cache'
 
-import { useSettingsContext } from '../contexts/settings'
+import { useSettingsContext } from '../contexts/settings-provider'
 
 export const ThemeProvider = ({ children }: React.PropsWithChildren) => {
   const settings = useSettingsContext()
