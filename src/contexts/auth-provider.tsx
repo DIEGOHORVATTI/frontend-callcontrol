@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react'
 
+import { STORAGE_KEYS } from '@/constants/config'
+
 import type { User } from '@/types/User'
-import { STORAGE_KEYS } from '../constants/config'
 
 type AuthContextData = {
   user: User | null
@@ -15,14 +16,6 @@ const AuthContext = createContext<AuthContextData | undefined>(undefined)
 export const AuthProvider = ({ children }: React.PropsWithChildren) => {
   const [user, setUser] = useState<User | null>(null)
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem(STORAGE_KEYS.USER_DATA)
-
-    if (storedUser) {
-      setUser(JSON.parse(storedUser))
-    }
-  }, [])
-
   const login = useCallback((username: string, maxCalls: number, token: string) => {
     const newUser = { username, maxCalls, token }
 
@@ -34,6 +27,14 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
   const logout = useCallback(() => {
     setUser(null)
     localStorage.removeItem(STORAGE_KEYS.USER_DATA)
+  }, [])
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem(STORAGE_KEYS.USER_DATA)
+
+    if (storedUser) {
+      setUser(JSON.parse(storedUser))
+    }
   }, [])
 
   return (
