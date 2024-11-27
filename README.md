@@ -81,6 +81,13 @@ Features include:
 4. Push to the branch
 5. Create a Pull Request
 
+<img width="1213" alt="image" src="https://github.com/user-attachments/assets/b19feb10-cdee-44cd-aa04-004d98515e97">
+<img width="1213" alt="image" src="https://github.com/user-attachments/assets/38316443-15d4-4f3b-9a2d-8cde1a30cdeb">
+<img width="1213" alt="image" src="https://github.com/user-attachments/assets/ded6d473-d325-4a75-a389-a6245db6dd84">
+<img width="1213" alt="image" src="https://github.com/user-attachments/assets/60a83eb8-c345-453c-9c31-7189bd74b622">
+
+
+
 ## License
 
 This project is licensed under the MIT License.
